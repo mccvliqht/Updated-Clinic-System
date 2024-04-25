@@ -20,6 +20,16 @@ body {
     
 }
 
+.fa {
+  font-size: 40px;
+  margin-right: 8px;
+}
+
+.option {
+  font-size: 45px;
+  cursor: pointer;
+}
+
 .navBar {
     height: 100%;
     width: 0;
@@ -36,14 +46,17 @@ body {
   .navBar a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 20px;
     color: #000000;
     display: block;
     transition: 0.3s;
+    cursor: pointer;
+    margin-bottom: 10px;
   }
   
   .navBar a:hover {
     color: #9b9b9b;
+    text-decoration: underline;
   }
   
   .navBar .closebtn {
