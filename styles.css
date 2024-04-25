@@ -1,0 +1,593 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    scroll-padding-top: 2rem;
+    scroll-behavior: smooth;
+}
+
+/* Home */
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-color);
+    box-shadow: 0 8px 11px rgb(14 55 54 / 15%);
+    padding: 10px 60px;
+    transition: 0.5;
+}
+header .logo {
+    width: 427px;
+    height: 52px;
+}
+header .navbar {
+    display: flex;
+    column-gap: 2.5rem;
+}
+header .navbar a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+}
+header .navbar a:hover,
+header .navbar .make-active {
+    background: #C1E8FF;
+    border-radius: 5rem;
+    color: #021024;
+    transition: background 0.5s;
+}
+header .navbar .make-active:hover {
+    background: #7DA0CA;
+    transition: 0.2s ease;
+}
+.home-container {
+    position: absolute;
+    padding-top: 80px;
+    width: 100%;
+    min-height: 300px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.home-container img {
+    width: 500px;
+    position: absolute;
+    margin-left: 880px;
+    margin-bottom: -90px;
+}
+.home-text {
+    padding: 260px 40px;
+    padding-left: 155px;
+}
+.home-text p {
+    font-size: .9rem;
+    font-weight: 200;
+    color: #021024;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+.home-text h1 {
+    line-height: 40px;
+    font-size: 2rem;
+    font-weight: 650;
+    margin-top: 0.2rem;
+    margin-bottom: 0.4rem;
+    color: #052659;
+}
+.home-text .btn {
+    padding: 0.6rem 1.2rem;
+    background: #C1E8FF;
+    color: #021024;
+    font-weight: 500;
+    border-radius: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap:  00.5rem;
+    max-width: 130px;
+    margin-top: 1rem;
+}
+.home-text .btn:hover {
+    background: #7DA0CA;
+    transition: 0.2s ease;
+}     
+
+/* Create */
+.create-container {
+    position: absolute;
+    padding-top: 80px;
+    width: 100%;
+    min-height: 500px;
+    max-height: 640px;
+    align-items: center;
+    overflow: hidden;
+    padding: 260px 40px;
+    padding-left: 155px;
+}
+.create-container h1 {
+    line-height: 40px;
+    font-size: 2rem;
+    font-weight: 650;
+    margin-top: -8rem;
+    margin-bottom: 0.1rem;
+    color: #052659;
+}
+.create-container p {
+    font-size: 0.9rem;
+}
+.create-container .form {
+    margin-top: 5px;
+    margin-bottom: 1.6rem;
+}
+.create-container .form .input-box {
+    display: inline-block;
+    margin: 20px 0;
+    padding-right: 20px;
+}
+.create-container .form .input-box input {
+    display: block;
+}
+.create-container .form #input-box3 .input-box select {
+    display: block;
+    padding: 0 55px;
+    margin-bottom: -10px;
+}
+.create-container img {
+    width: 600px;
+    position: absolute;
+    margin-left: 509px;
+    margin-top: -380.5px;
+}
+.create-container .create {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.5rem 1.6rem;
+    background: #C1E8FF;
+    border-radius: 3rem;
+    color: #021024;
+    transition: background 0.5s;
+}
+.create-container .create:hover {
+    background: #7DA0CA;
+    transition: 0.2s ease;
+}
+
+/* Login */
+.login-container {
+    position: absolute;
+    padding-top: 80px;
+    width: 100%;
+    min-height: 500px;
+    max-height: 640px;
+    align-items: center;
+    overflow: hidden;
+    padding: 260px 40px;
+    padding-left: 155px;
+}
+.login-container h1 {
+    line-height: 40px;
+    font-size: 2rem;
+    font-weight: 650;
+    margin-top: -8rem;
+    margin-bottom: 0.1rem;
+    color: #052659;
+}
+.login-container p {
+    font-size: 0.9rem;
+}
+.login-container .form {
+    margin-top: 5px;
+    margin-bottom: 1.6rem;
+}
+.login-container .form .input-box {
+    display: inline-block;
+    margin-top: 33px;
+    padding-right: 40px;
+}
+.login-container .form .input-box input {
+    display: block;
+    padding: 1.2px 8.3px;
+}
+.login-container .form .input-box2 {
+    display: inline-block;
+}
+.login-container .form #input-box .input-box select {
+    display: block;
+    padding: 1.1px 63px;
+    margin-bottom: 20px;
+}
+.login-container .form .your-password {
+    display: block;
+    padding: 1.2px 8.3px;
+}
+.login-container .form .input-box2 .forgot {
+    font-size: 0.7rem;
+    margin: 0 24px;
+}
+.login-container img {
+    width: 600px;
+    position: absolute;
+    margin-left: 509px;
+    margin-top: -247px;
+}
+.login-container .login {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.5rem 5rem;
+    background: #C1E8FF;
+    border-radius: 3rem;
+    color: #021024;
+    transition: background 0.5s;
+}
+.login-container .login:hover {
+    background: #7DA0CA;
+    transition: 0.2s ease;
+}
+
+/* Appointment */
+.appt-logo img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px; 
+    width: 400px; 
+    height: auto;
+}
+
+.appt-doctor-pic {
+    position: absolute;
+    bottom: 0px;
+    left: 30px;
+    padding: 20px;
+}
+
+.appt-doctor-pic img {
+    width: 550px;
+    height: auto;
+}
+
+.appointment-container {
+    position: relative;
+    max-width: 100%; 
+    height: auto; 
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    padding-left: 650px;
+    padding-top: 150px;
+    padding-right: 100px;
+    overflow-x: hidden;
+}
+
+.appointment-container p {
+    margin: 0;
+    margin-top: 5px; 
+    padding: 0;
+    white-space: normal;
+    font-size: 14px;
+}
+
+.appointment-container h1 {
+    margin-bottom: 5px; 
+}
+
+.dropdown-container {
+    align-self: flex-start; 
+    padding-top: 30px;
+    display: flex; 
+    flex-direction: column;
+}
+
+.dropdown-container label {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.dropdown-container select {
+    width: 275px; 
+    padding: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    font-size: 13px; 
+}
+
+.dropdown-container select::placeholder {
+    color: #999; 
+}
+
+#proceed-btn {
+    background-color: #7da0ca; 
+    color: #fff; 
+    border: none; 
+    border-radius: 20px; 
+    padding: 10px 35px; 
+    font-size: 13px; 
+    cursor: pointer; 
+    width: fit-content; 
+    margin-top: 20px;
+}
+
+#proceed-btn:hover {
+    background-color: #6187a0; 
+}
+
+/* Resched */
+.resched-container{
+    padding-top: 165px;
+    margin: 0 auto; 
+    align-items: center;
+    position: relative;
+    max-width: 100%; 
+    height: auto; 
+    display: flex;
+    flex-direction: column; 
+    padding-left: 610px;
+    padding-top: 170px;
+    padding-right: 100px;
+    overflow-x: hidden;
+}
+
+.resched-container p {
+    margin-bottom: 20px; 
+    width: 70%;
+    font-size: 14px;
+}
+
+.resched-container .appointmentID label {
+    margin-bottom: 10px; /* Adjust this value to your preference */
+    font-size: 16px;
+}
+
+.resched-container input {
+    width: 275px; 
+    padding: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    font-size: 13px; 
+}
+
+
+/* cancel */
+.cancel-container {
+    padding-top: 165px;
+    margin: 0 auto; 
+    align-items: center;
+    position: relative;
+    max-width: 100%; 
+    height: auto; 
+    display: flex;
+    flex-direction: column; 
+    padding-left: 610px;
+    padding-top: 170px;
+    padding-right: 100px;
+    overflow-x: hidden;
+}
+
+.cancel-container p {
+    margin-bottom: 20px; 
+    width: 70%;
+    font-size: 14px;
+}
+
+.cancel-container .appointmentID label {
+    margin-bottom: 10px; /* Adjust this value to your preference */
+    font-size: 16px;
+}
+
+.cancel-container input {
+    width: 275px; 
+    padding: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    font-size: 13px; 
+}
+
+/*Service*/
+.service-box h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.service-box {
+    width: 270px;
+    border: 2px solid #021024;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px;
+    display: inline-block;
+    height: 270px;
+    overflow: hidden;
+    box-shadow: 0 8px 11px rgb(14 55 54 / 15%);
+  }
+
+.boxes {
+    margin-top: 140px;
+    margin-left: 210px;
+}
+
+.boxes h1 {
+    text-align: center;
+    margin-left: -205px;
+}
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    transition: top 0.3s;
+    z-index: 1000;
+  }
+  
+header.scrolled {
+    top: -100px;
+  }
+.boxes p {
+    text-align: center;
+    font-size: 14px;
+}
+
+.boxes img {
+    width: 50px;
+    height: 50px;
+    margin: 10px 96px;
+}
+
+.service-box:hover {
+    background: #C1E8FF;
+    transition: 0.2s ease;
+}
+
+/*Book*/
+.book-container{
+    padding-top: 165px;
+    align-items: center;
+    position: relative;
+    max-width: 100%; 
+    height: auto; 
+    display: flex;
+    flex-direction: column; 
+    padding-left: 610px;
+    padding-top: 110px;
+    padding-right: 100px;
+    overflow-x: hidden;
+}
+
+.book-container p {
+    margin-bottom: 20px; 
+    width: 70%;
+    font-size: 14px;
+}
+
+.book-container .book-form .book-input-box {
+    display: inline-block;
+}
+
+.book-container .book-form #book-input-box .book-input-box label {
+    font-size: 14px;
+}
+
+.book-container .book-form #book-input-box .book-input-box input, select {
+    display: block;
+    margin-right: 5px;
+    padding: 2px 17px;
+    margin-bottom: 5px;
+}
+
+.book-container .book-form #book-input-box .book-input-box #service {
+    display: block;
+    padding: 2.7px 11px;
+}
+
+.book-container .book-form #book-input-box .book-input-box .box {
+    display: block;
+    padding: 2.7px 34px;
+}
+
+.book-container .book-form #book-input-box .book-input-box .box2 {
+    display: block;
+    padding: 3.4px 41px;
+}
+
+.book-container .book-form #book-input-box .book-input-box #doctor {
+    display: block;
+    padding: 3.4px 44px;
+}
+
+.book-container .book-form #book-input-box .book-input-box #avail-date, #avail-time {
+    display: block;
+    padding: 3.4px 51px;
+}
+
+.book-container .book-form #book-input-box .book-input-box #avail-time {
+    display: block;
+    padding: 3.2px 50px;
+}
+
+/* Doctors */
+
+.doc-box h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.doc-box {
+    width: 270px;
+    border: 2px solid #021024;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px;
+    display: inline-block;
+    height: 270px;
+    overflow: hidden;
+    box-shadow: 0 8px 11px rgb(14 55 54 / 15%);
+    position: relative;
+  }
+
+.boxes-doc {
+    margin-top: 140px;
+    margin-left: 210px;
+}
+
+.boxes-doc h1 {
+    text-align: center;
+    margin-left: -205px;
+}
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    transition: top 0.3s; 
+    z-index: 1000;
+  }
+  
+header.scrolled {
+    top: -100px;
+  }
+.boxes-doc p {
+    text-align: center;
+    font-size: 14px;
+}
+
+.boxes-doc img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.doc-box .text {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0; 
+    transition: opacity 0.3s ease, top 0.3s ease; 
+  }
+  
+.doc-box:hover .text {
+    opacity: 1;
+    top: 0;
+  }
+
+.doc-box:hover {
+    background: #C1E8FF;
+    transition: 0.2s ease;
+}
+
+
+
+

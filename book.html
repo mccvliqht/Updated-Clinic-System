@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Elsie&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+        <div class="appt-logo">
+            <img src="img/logo.png" alt="logo icon">
+        </div>
+
+        <div class="appt-doctor-pic">
+            <img src="img/doc3.png" alt="doctor">
+        </div>
+
+
+    <div class="book-container">
+            <h1>Book an Appointment</h1>
+            <p>To proceed with booking an appointment, please provide the required information below.</p>
+
+            <div class="book-form">
+                <form action="">
+                    <div id="book-input-box">
+                    <div class="book-input-box">
+                        <label for="last-name" class="name">Last Name</label>
+                        <input type="text" required class="your-name">
+                    </div>
+                    <div class="book-input-box">
+                        <label for="first-name" class="name">First Name</label>
+                        <input type="text" required class="your-name">
+                    </div>
+                    </div>
+
+                    <div id="book-input-box">
+                    <div class="book-input-box">
+                        <label for="datepicker">Birthdate</label>
+                        <input type="date" id="datepicker" name="datepicker" class="box">
+                    </div>
+                    <div class="book-input-box">
+                        <label for="gender">Biological Gender</label>
+                        <select id="gender" name="gender" class="box box2">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    </div>
+
+                    <div id="book-input-box">
+                    <div class="book-input-box">
+                        <label for="contact-number" class="contact">Contact Number</label>
+                        <input type="number" required class="your-contact">
+                    </div>
+                    <div class="book-input-box">
+                        <label for="email" class="email">Email</label>
+                        <input type="text" required class="your-email">
+                    </div>
+                    </div>
+
+                    <div id="book-input-box">
+                    <div class="book-input-box">
+                        <label for="service">Choose service</label>
+                        <select id="service" name="service" class="box2">
+                            <option value="" disabled selected></option>
+                            <option value="blood-test">Blood Test</option>
+                            <option value="vaccine">Vaccination</option>
+                            <option value="minor-treatment">Minor Illness Treatment</option>
+                            <option value="chronic-disease">Chronic Disease</option>
+                            <option value="ultrasound">Ultrasound</option>
+                            <option value="dental">Dental</option>
+                        </select>
+                    </div>
+                    <div class="book-input-box">
+                        <label for="doctor">Available Doctor</label>
+                        <select id="doctor" name="doctor" class="box box2">
+                            <option value="" disabled selected>Select doctor</option>
+                            <option value=""></option>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    </div>
+
+                    <div id="book-input-box">
+                    <div class="book-input-box">
+                        <label for="avail-date">Available Date</label>
+                        <select id="avail-date" name="date" class="box box2">
+                            <option value="" disabled selected>Select Date</option>
+                            <option value=""></option>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="book-input-box">
+                        <label for="avail-time">Available Time</label>
+                        <select id="avail-time" name="time" class="box box2">
+                            <option value="" disabled selected>Select Time</option>
+                            <option value=""></option>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    </div>
+
+                </form>
+            </div>
+           
+            <button id="proceed-btn">Confirm</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
