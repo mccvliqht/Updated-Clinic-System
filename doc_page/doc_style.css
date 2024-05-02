@@ -5,6 +5,11 @@
   width: 50%;;
 }
 
+.fa {
+  font-size: 40px;
+  margin-right: 8px;
+}
+
 body {
     font-family: "Lato", sans-serif;
   }
@@ -16,23 +21,25 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #5483b3;
+    background-color: #ffffff;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+    box-shadow: 10px 0px 5px 0px lightgray;
   }
   
   .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 8px 10px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: #ffffff;
+    color: #000000;
     display: block;
     transition: 0.3s;
   }
   
   .sidenav a:hover {
     color: #ababab;
+    text-decoration: underline;
   }
   
   .sidenav .closebtn {
