@@ -72,10 +72,6 @@ body {
     padding: 16px;
   }
   
-  @media screen and (max-height: 450px) {
-    .navBar {padding-top: 15px;}
-    .navBar a {font-size: 18px;}
-  }
 
 #word {
     text-align: center;

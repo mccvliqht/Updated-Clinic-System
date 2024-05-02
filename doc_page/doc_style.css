@@ -1,13 +1,24 @@
 #mylogo {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;;
+  padding: 20px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 60%;
+  margin-bottom: 20px;
 }
 
 .fa {
   font-size: 40px;
   margin-right: 8px;
+}
+
+#logout {
+  bottom: 25px;
+  left: 0px;
+  position: absolute;
+  padding: 0px 0px 50px 10px;
+  font-size: 30px; 
+  cursor: pointer;
 }
 
 body {
@@ -50,7 +61,4 @@ body {
     margin-left: 50px;
   }
   
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
+  
