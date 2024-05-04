@@ -87,3 +87,52 @@ body {
   border-color: white;
   border-radius: 5px;
 }
+
+/*Doc Schedules*/
+
+#mainSched {
+  margin: 20px;
+  margin-left: 30px;
+  padding: 10px;
+  border: 4px solid rgb(167, 167, 167);
+  width: 190px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.boxSched {
+  padding: 10px;
+}
+
+.boxSched label {
+  display: block;
+  padding-left: 10px;
+  text-align: left;
+}
+
+
+input[type="time"] {
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  width: 130px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+input[type="date"] {
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  width: 130px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  padding: 10px; 
+  background-color: #007bff;
+  color: #fff; 
+  border: 2px solid #007bff; 
+  border-radius: 5px;
+  font-size: 16px; 
+  cursor: pointer;
+}
