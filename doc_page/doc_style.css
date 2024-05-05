@@ -90,9 +90,14 @@ body {
 
 /*Doc Schedules*/
 
+#schedContainer {
+  display: flex;
+}
+
 #mainSched {
   margin: 20px;
-  margin-left: 30px;
+  margin-left: 50px;
+  margin-top: 60px; /* Adjust top margin to move the form down */
   padding: 10px;
   border: 4px solid rgb(167, 167, 167);
   width: 190px;
@@ -135,4 +140,33 @@ input[type="submit"] {
   border-radius: 5px;
   font-size: 16px; 
   cursor: pointer;
+}
+
+#tableSched {
+  display: table;
+  margin: 10px auto 10px; /* Adjust top margin to move the table up slightly */
+  text-align: center; /* Center the content inside the table */
+}
+
+#tableSched table {
+  border-collapse: collapse;
+  width: 50%; /* Adjust as needed */
+  margin: 0 auto; /* Center the table inside its container */
+}
+
+#tableSched table, #tableSched th, #tableSched td {
+  border: 3px solid black; 
+  padding: 10px 20px 10px;
+  text-align: center; 
+}
+
+
+
+#tableSched th {
+  background-color: #007bff;
+  color: white;
+}
+
+#tableSched h3 {
+  margin-top: 20px; /* Adjust as needed */
 }
