@@ -16,7 +16,7 @@
         <!--Creating Account-->
         <div class="create-container">
             <h1>Create an Account</h1>
-            <p>Already have an account? <a href="login.html">Login</a></p>
+            <p>Already have an account? <a href="login.php">Login</a></p>
             <div class="form">
                 <form action="process_registration.php" method="post"> <!-- Changed action to point to process_registration.php -->
                     <div class="input-box">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="input-box">
                             <label for="contact" class="contact">Contact Number</label>
-                            <input type="number" name="contact" required class="your-number"> <!-- Added name attribute -->
+                            <input type="tel" name="contact" required class="your-number"> <!-- Added name attribute -->
                         </div>
                     </div>
                     <div id="input-box2">
