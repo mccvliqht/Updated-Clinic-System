@@ -208,7 +208,7 @@ CREATE TABLE `tblservice` (
 INSERT INTO `tblservice` (`serv_id`, `serv_name`, `serv_desc`, `serv_duration`) VALUES
 (4321, 'Blood Test', 'Medical tests can be done on people of all ages to find problems, track treatments, and assess overall health, including checking blood cells, cholesterol levels, and detecting infections or illnesses.', '30 minutes'),
 (4322, 'Vaccination', 'Vaccination not only protects individuals but also lowers the prevalence of infectious diseases, promoting public health and well-being for all people. Vaccines include Pneumonia, Anti-Rabies, and Birth Control.', '30 minutes'),
-(4323, 'Minor Illness', 'Focuses on managing symptoms, alleviating discomfort, and supporting the body\'s natural healing process with the guidance of healthcare providers. Treatments include Cold, Flu, and Non-Severe asthma attack.', '30 minutes'),
+(4323, 'Minor Illness', "Focuses on managing symptoms, alleviating discomfort, and supporting the body's natural healing process with the guidance of healthcare providers. Treatments include Cold, Flu, and Non-Severe asthma attack.", '30 minutes'),
 (4324, 'Chronic Disease', 'The treating and controlling long-term health conditions like diabetes, involves coordinated efforts among healthcare providers in clinics to assist patients in managing their condition better.', '30 minutes'),
 (4325, 'Ultrasound', 'Allows healthcare professionals to visualize internal structures such as detecting abnormalities in organs like the liver, kidneys, and fetal development during pregnancy and the heart.', '30 minutes'),
 (4326, 'Dental', 'Oral health care services are provided by our Clinic which includes Regular check-ups, Cleaning, Whitening, Dental Crowns and Bridges.', '30 minutes');
