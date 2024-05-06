@@ -196,23 +196,15 @@ header .navbar .make-active:hover {
     margin-top: 33px;
     padding-right: 40px;
 }
-.login-container .form .input-box input {
+.login-container .form input {
     display: block;
-    padding: 1.2px 8.3px;
+    padding: 0 8.3px;
+    margin-bottom: -30px;
 }
-.login-container .form .input-box2 {
-    display: inline-block;
-}
-.login-container .form #input-box .input-box select {
-    display: block;
-    padding: 1.1px 63px;
+.login-container .form .your-cpassword {
     margin-bottom: 20px;
 }
-.login-container .form .your-password {
-    display: block;
-    padding: 1.2px 8.3px;
-}
-.login-container .form .input-box2 .forgot {
+.login-container .form #input-box .input-box .forgot {
     font-size: 0.7rem;
     margin: 0 24px;
 }
@@ -220,7 +212,7 @@ header .navbar .make-active:hover {
     width: 600px;
     position: absolute;
     margin-left: 509px;
-    margin-top: -247px;
+    margin-top: -310.5px;
 }
 .login-container .login {
     font-size: 0.7rem;
@@ -358,6 +350,54 @@ header .navbar .make-active:hover {
     font-size: 13px; 
 }
 
+/* Reschedule */
+.reschedule-container {
+    align-items: center;
+    position: relative;
+    max-width: 100%; 
+    height: auto; 
+    display: flex;
+    flex-direction: column; 
+    padding-left: 610px;
+    padding-top: 120px;
+    padding-right: 100px;
+    overflow-x: hidden;
+}
+.reschedule-container p {
+    margin-bottom: 20px; 
+    width: 70%;
+    font-size: 13px;
+    text-align: justify;
+}
+.reschedule form #reschedule-input-box {
+    display: inline-block;
+}
+.reschedule form #reschedule-input-box select{
+    padding: 4px 50px;
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.reschedule form #reschedule-input-box option {
+    width: 100%;
+}
+.reschedule .confirm-btn {
+    background-color: #7da0ca; 
+    color: #fff; 
+    border: none; 
+    border-radius: 20px; 
+    padding: 4px 40px; 
+    font-size: 13px; 
+    cursor: pointer; 
+    width: fit-content; 
+    margin-top: 20px;
+    margin-left: 160px;
+    display: block;
+}
+.reschedule .confirm-btn:hover {
+    background: #6187a0;
+}
+
 
 /* cancel */
 .cancel-container {
@@ -463,56 +503,85 @@ header.scrolled {
     padding-right: 100px;
     overflow-x: hidden;
 }
-
 .book-container p {
     margin-bottom: 20px; 
     width: 70%;
     font-size: 14px;
 }
-
 .book-container .book-form .book-input-box {
     display: inline-block;
 }
-
 .book-container .book-form #book-input-box .book-input-box label {
     font-size: 14px;
 }
-
 .book-container .book-form #book-input-box .book-input-box input, select {
     display: block;
     margin-right: 5px;
     padding: 2px 17px;
     margin-bottom: 5px;
 }
-
-.book-container .book-form #book-input-box .book-input-box #service {
-    display: block;
-    padding: 2.7px 11px;
-}
-
 .book-container .book-form #book-input-box .book-input-box .box {
     display: block;
     padding: 2.7px 34px;
 }
-
 .book-container .book-form #book-input-box .book-input-box .box2 {
     display: block;
     padding: 3.4px 41px;
 }
-
+.book-container .book-form #book-input-box .book-input-box #service {
+    display: block;
+    padding: 3.6px 35px;
+}
 .book-container .book-form #book-input-box .book-input-box #doctor {
     display: block;
-    padding: 3.4px 44px;
+    padding: 3.6px 44px;
 }
-
 .book-container .book-form #book-input-box .book-input-box #avail-date, #avail-time {
     display: block;
     padding: 3.4px 51px;
 }
-
 .book-container .book-form #book-input-box .book-input-box #avail-time {
     display: block;
     padding: 3.2px 50px;
+}
+
+/* Book-success */
+.confirmation-container{
+    align-items: center;
+    position: relative;
+    max-width: 100%; 
+    height: auto; 
+    display: flex;
+    flex-direction: column; 
+    padding-left: 610px;
+    padding-top: 80px;
+    padding-right: 100px;
+    overflow-x: hidden;
+}
+.confirmation-container p {
+    margin-bottom: 20px; 
+    width: 70%;
+    font-size: 13px;
+    text-align: justify;
+}
+.confirmation-details {
+    border: 1.5px solid black; 
+    width: 55%;
+    border-spacing: 0;
+}
+.confirmation-details td {
+    border-bottom: 1.5px solid black;
+    padding: 4px;
+    text-align: left;
+    font-size: 0.9rem;
+    letter-spacing: 0.1rem;
+}
+.confirmation-details tr:last-child td {
+    border-bottom: none;
+}
+.confirmation-details strong {
+    text-transform: uppercase;
+    letter-spacing: 0;
 }
 
 /* Doctors */
@@ -587,7 +656,3 @@ header.scrolled {
     background: #C1E8FF;
     transition: 0.2s ease;
 }
-
-
-
-
