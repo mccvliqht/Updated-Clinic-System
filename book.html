@@ -24,15 +24,15 @@
             <p>To proceed with booking an appointment, please provide the required information below.</p>
 
             <div class="book-form">
-                <form action="">
+                <form action="process_book.php" method="post"> <!--Updated form-->
                     <div id="book-input-box">
                     <div class="book-input-box">
                         <label for="last-name" class="name">Last Name</label>
-                        <input type="text" required class="your-name">
+                        <input type="text" name="last-name" required class="your-name">
                     </div>
                     <div class="book-input-box">
                         <label for="first-name" class="name">First Name</label>
-                        <input type="text" required class="your-name">
+                        <input type="text" name="first-name" required class="your-name">
                     </div>
                     </div>
 
@@ -45,8 +45,8 @@
                         <label for="gender">Biological Gender</label>
                         <select id="gender" name="gender" class="box box2">
                             <option value="" disabled selected>Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
                     </div>
@@ -54,11 +54,11 @@
                     <div id="book-input-box">
                     <div class="book-input-box">
                         <label for="contact-number" class="contact">Contact Number</label>
-                        <input type="number" required class="your-contact">
+                        <input type="tel" name="contact" required class="your-contact">
                     </div>
                     <div class="book-input-box">
                         <label for="email" class="email">Email</label>
-                        <input type="text" required class="your-email">
+                        <input type="text" name="email" required class="your-email">
                     </div>
                     </div>
 
@@ -66,13 +66,13 @@
                     <div class="book-input-box">
                         <label for="service">Choose service</label>
                         <select id="service" name="service" class="box2">
-                            <option value="" disabled selected></option>
-                            <option value="blood-test">Blood Test</option>
-                            <option value="vaccine">Vaccination</option>
-                            <option value="minor-treatment">Minor Illness Treatment</option>
-                            <option value="chronic-disease">Chronic Disease</option>
-                            <option value="ultrasound">Ultrasound</option>
-                            <option value="dental">Dental</option>
+                            <option value="" disabled selected>Select Service</option>
+                            <option value="Blood Test">Blood Test</option>
+                            <option value="Vaccination">Vaccination</option>
+                            <option value="Minor Illness">Minor Illness</option>
+                            <option value="Chronic Disease">Chronic Disease</option>
+                            <option value="Ultrasound">Ultrasound</option>
+                            <option value="Dental">Dental</option>
                         </select>
                     </div>
                     <div class="book-input-box">
@@ -103,11 +103,9 @@
                         </select>
                     </div>
                     </div>
-
+                    <button type="submit" id="proceed-btn">Confirm</button>
                 </form>
             </div>
-           
-            <button id="proceed-btn">Confirm</button>
     </div>
 
     <script src="script.js"></script>
