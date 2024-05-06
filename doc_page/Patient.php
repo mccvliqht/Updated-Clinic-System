@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedules</title>
+    <title>Patient page</title>
     <link rel="stylesheet" href="doc_style.css">
     <link rel="icon" href="LogoClinic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -21,42 +21,27 @@
       <span title="Logout"><i id="logout" class="fa fa-sign-out"></i></span>
     </div>
     
-  <div id="schedContainer">
-    <div id="mainSched">
-
-      <h3>ADD SCHEDULE</h3>
-      <form action="insert_schedule.php" method="post">
-        <div class="boxSched">
-          <label for="date">Select Date</label><br>
-          <input type="date" name="date"><br>
-        </div>
-
-        <div class="boxSched">
-          <label for="time">Start Time</label><br>
-          <input type="time" name="start_time"><br>
-        </div>
-        
-        <div class="boxSched">
-          <label for="">End Time</label><br>
-          <input type="time" name="end_time"><br><br>
-          <input type="submit" value="Submit"><br>
-        </div>
-        
-        
-      </form>
+    <div>
 
     </div>
 
-    <div id="tableSched">
-    <h3>MY SCHEDULES</h3><br>
-      <table>
+    <div id="patientTable">
+      <h2>PATIENT LIST</h2>
+    <table>
           <tr>
-              <th>Schedules ID</th>
-              <th>Schedules Date</th>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Service</th>
+              <th>Contacts</th>
+              <th>Date</th>
               <th>Start Time</th>
-              <th>End Time</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Action</th>
+
           </tr>
-          <?php include 'display_doc_schedules.php'; ?>
+          <?php include 'list_patient.php'; ?>
           <?php
             $result = $conn->query($sql);
 
@@ -69,14 +54,19 @@
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>".$row["sched_id"]."</td>";
-                    echo "<td>".$row["sched_date"]."</td>";
-                    echo "<td>".$row["start_time"]."</td>";
-                    echo "<td>".$row["end_time"]."</td>";
+                    echo "<td>".$row["apt_id"]."</td>";
+                    echo "<td>".$row["ptn_fname"]."</td>";
+                    echo "<td>".$row["ptn_lname"]."</td>";
+                    echo "<td>".$row["serv_name"]."</td>";
+                    echo "<td>".$row["ptn_contact"]."</td>";
+                    echo "<td>".$row["apt_date"]."</td>";
+                    echo "<td>".$row["apt_time"]."</td>";
+                    echo "<td>".$row["serv_duration"]."</td>";
+                    echo "<td>".$row["sched_status"]."</td>";
                   echo "</tr>";
               }
           } else {
-              echo "<tr><td colspan='4'>No Schedules found</td></tr>";
+              echo "<tr><td colspan='3'>No records found</td></tr>";
           }
 
           $result->free();
@@ -87,7 +77,6 @@
           ?>
       </table>
     </div>
-  </div>
         
     <script>
     function openNav() {

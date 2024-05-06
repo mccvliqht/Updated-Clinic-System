@@ -1,4 +1,10 @@
 /*For Navigation*/
+#BarsNav {
+  padding-left: 15px;
+    padding-top: 15px;
+    display: flex;
+}
+
 #mylogo {
   padding: 20px;
   position: absolute;
@@ -61,6 +67,44 @@ body {
     font-size: 36px;
     margin-left: 50px;
   }
+
+/*Doc Landing Page*/
+
+#doclandh2 {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+#todayTable {
+  display: table;
+  margin: 10px auto 10px; /* Adjust top margin to move the table up slightly */
+  text-align: center; /* Center the content inside the table */
+}
+
+#todayTable table {
+  border-collapse: collapse;
+  width: 50%; /* Adjust as needed */
+  margin: 0 auto; /* Center the table inside its container */
+}
+
+#todayTable table, #todayTable th, #todayTable td {
+  border: 3px solid black; 
+  padding: 10px 20px 10px;
+  text-align: center; 
+}
+
+
+
+#todayTable th {
+  background-color: #007bff;
+  color: white;
+}
+
+#todayTable h2 {
+  margin-top: 20px; /* Adjust as needed */
+  font-size: 30px;
+}
   
 /*Doc profile*/
 
@@ -169,4 +213,36 @@ input[type="submit"] {
 
 #tableSched h3 {
   margin-top: 20px; /* Adjust as needed */
+}
+
+/*Doc Patient*/
+
+#patientTable {
+  display: table;
+  margin: 10px auto 10px; /* Adjust top margin to move the table up slightly */
+  text-align: center; /* Center the content inside the table */
+}
+
+#patientTable table {
+  border-collapse: collapse;
+  width: 50%; /* Adjust as needed */
+  margin: 0 auto; /* Center the table inside its container */
+}
+
+#patientTable table, #patientTable th, #patientTable td {
+  border: 3px solid black; 
+  padding: 10px 20px 10px;
+  text-align: center; 
+}
+
+
+
+#patientTable th {
+  background-color: #007bff;
+  color: white;
+}
+
+#patientTable h2 {
+  margin-top: 20px; /* Adjust as needed */
+  font-size: 30px;
 }
