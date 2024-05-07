@@ -77,62 +77,48 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
     // Start a transaction
     $conn->begin_transaction();
 
-    // Prepare SQL statement to update account details in tblAdmin
-    $sqlAdmin = "UPDATE tblAdmin 
-                 INNER JOIN tblLogin ON tblAdmin.lgn_id = tblLogin.lgn_id 
-                 SET adm_fname = ?, adm_lname = ?, adm_email = ?, adm_contact = ?
-                 WHERE tblLogin.lgn_username = ?";
+    try {
+        // Prepare SQL statement to update account details in tblAdmin
+        $sqlAdmin = "UPDATE tblAdmin 
+                     INNER JOIN tblLogin ON tblAdmin.lgn_id = tblLogin.lgn_id 
+                     SET adm_fname = ?, adm_lname = ?, adm_email = ?, adm_contact = ?, tblLogin.lgn_username = ?
+                     WHERE tblLogin.lgn_username = ?";
 
-    // Prepare the SQL statement for updating admin details
-    $stmtAdmin = $conn->prepare($sqlAdmin);
+        // Prepare the SQL statement for updating admin details
+        $stmtAdmin = $conn->prepare($sqlAdmin);
 
-    // Bind parameters and execute statement
-    $stmtAdmin->bind_param("sssss", $firstName, $lastName, $email, $contact, $oldUsername);
-    $stmtAdmin->execute();
+        if (!$stmtAdmin) {
+            throw new Exception("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
 
-    // Check if the update was successful
-    if ($stmtAdmin->affected_rows <= 0) {
+        // Bind parameters and execute statement
+        $stmtAdmin->bind_param("ssssss", $firstName, $lastName, $email, $contact, $newUsername, $oldUsername);
+        if (!$stmtAdmin->execute()) {
+            throw new Exception("Execute failed: (" . $stmtAdmin->errno . ") " . $stmtAdmin->error);
+        }
+
+        if ($stmtAdmin->affected_rows <= 0) {
+            throw new Exception("No rows affected");
+        }
+
+        $stmtAdmin->close();
+
+        // Update session variables with new details
+        $_SESSION['username'] = $newUsername;
+
+        // Commit the transaction
+        $conn->commit();
+
+        // Redirect to prevent form resubmission
+        header("Location: {$_SERVER['REQUEST_URI']}");
+        exit();
+    } catch (Exception $e) {
         $conn->rollback();
-        // Error message
-        // Handle error or redirect back with error message
+        // Handle error - Display error message or log it for debugging
+        echo "Error: " . $e->getMessage();
     }
-
-    $stmtAdmin->close();
-
-    // Update session variables with new details
-    $_SESSION['username'] = $newUsername;
-    $username = $newUsername;
-
-    // Prepare SQL statement to update username in tblLogin
-    $sqlLogin = "UPDATE tblLogin 
-                 SET lgn_username = ?
-                 WHERE lgn_username = ?";
-
-    // Prepare the SQL statement for updating login username
-    $stmtLogin = $conn->prepare($sqlLogin);
-
-    // Bind parameters and execute statement
-    $stmtLogin->bind_param("ss", $newUsername, $oldUsername);
-    $stmtLogin->execute();
-
-    // Check if the update was successful
-    if ($stmtLogin->affected_rows <= 0) {
-        $conn->rollback();
-        // Error message
-        // Handle error or redirect back with error message
-    }
-
-    $stmtLogin->close();
-
-    // Commit the transaction
-    $conn->commit();
-
-    // Redirect to prevent form resubmission
-    header("Location: {$_SERVER['REQUEST_URI']}");
-    exit();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
