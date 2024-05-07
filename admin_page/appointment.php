@@ -41,7 +41,22 @@ if(isset($_SESSION['username'])) {
 }
 
 $stmt->close(); // Close statement
-$conn->close(); // Close connection
+
+// Fetch appointment records
+$appointmentSql = "SELECT apt.apt_id, 
+                          CONCAT(ptn.ptn_fname, ' ', ptn.ptn_lname) AS patient, 
+                          serv.serv_name AS service, 
+                          CONCAT(doc.doc_fname, ' ', doc.doc_lname) AS service_provider, 
+                          apt.apt_date, 
+                          apt.apt_time, 
+                          serv.serv_duration AS duration,
+                          apt.sched_status
+                   FROM tblappoint apt 
+                   INNER JOIN tblpatient ptn ON apt.ptn_id = ptn.ptn_id 
+                   INNER JOIN tbldoctor doc ON apt.doc_id = doc.doc_id 
+                   INNER JOIN tblservice serv ON apt.serv_id = serv.serv_id";
+
+$appointmentResult = $conn->query($appointmentSql);
 ?>
 
 <!DOCTYPE html>
@@ -52,12 +67,11 @@ $conn->close(); // Close connection
   <title>Admin Page</title>
   <link rel="stylesheet" href="admin_style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 <body>
   <div class="sidebar">
     <div class="navbar">
-    <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
+      <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
       <button class="nav-icon" onclick="toggleSidebar()">
         <span class="line"></span>
         <span class="line"></span>
@@ -81,7 +95,61 @@ $conn->close(); // Close connection
     </ul>
   </div>
   <div class="content">
-    <!-- Main content goes here -->
+    <h2>Appointments List</h2>
+    <div class="toolbar">
+      <div class="toolbox-left">
+        <select name="status" id="status">
+          <option value="all">All</option>
+          <option value="upcoming">Upcoming</option>
+          <option value="completed">Completed</option>
+          <option value="canceled">Canceled</option>
+        </select>
+      </div>
+      <div class="toolbar__search">
+        <input type="text" placeholder="Search...">
+        <button class="search-button"><i class="fa fa-search"></i></button>
+      </div>
+      <div class="toolbar__filter">
+        <button>Filter</button>
+      </div>
+    </div>
+    <table class="appointment-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Patient</th>
+          <th>Service</th>
+          <th>Service Provider</th>
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>Duration (minutes)</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          // Populate table rows with appointment records
+          if ($appointmentResult->num_rows > 0) {
+              while ($row = $appointmentResult->fetch_assoc()) {
+                  echo "<tr>";
+                  echo "<td>" . $row['apt_id'] . "</td>";
+                  echo "<td>" . $row['patient'] . "</td>";
+                  echo "<td>" . $row['service'] . "</td>";
+                  echo "<td>" . $row['service_provider'] . "</td>";
+                  echo "<td>" . $row['apt_date'] . "</td>";
+                  echo "<td>" . $row['apt_time'] . "</td>";
+                  echo "<td>" . $row['duration'] . "</td>";
+                  echo "<td>" . $row['sched_status'] . "</td>";
+                  echo "<td><i class='fa fa-trash delete-icon action-icon'></i> <i class='fa fa-pencil edit-icon action-icon'></i></td>";
+                  echo "</tr>";
+              }
+          } else {
+              echo "<tr><td colspan='9'>No records found</td></tr>";
+          }
+        ?>
+      </tbody>
+    </table>
   </div>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
 </body>
