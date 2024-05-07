@@ -41,7 +41,13 @@ if(isset($_SESSION['username'])) {
 }
 
 $stmt->close(); // Close statement
-$conn->close(); // Close connection
+
+// Fetch doctor records
+$doctorSql = "SELECT doc_id, doc_fname, doc_lname, doc_contact, doc_email, 
+                     TIMESTAMPDIFF(YEAR, doc_birthdate, CURDATE()) AS age, 
+                     doc_spec 
+              FROM tbldoctor";
+$doctorResult = $conn->query($doctorSql);
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +58,6 @@ $conn->close(); // Close connection
   <title>Admin Page</title>
   <link rel="stylesheet" href="admin_style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 <body>
   <div class="sidebar">
@@ -81,7 +86,53 @@ $conn->close(); // Close connection
     </ul>
   </div>
   <div class="content">
-    <!-- Main content goes here -->
+    <h2>Doctors List</h2>
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <input type="text" placeholder="Search...">
+          <button class="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="toolbar__filter">
+          <button class="filter-button"><i class="fas fa-filter"></i> Filter</button>
+        </div>
+      </div>
+
+      <table class="doctor-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Specialization</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            // Populate table rows with doctor records
+            if ($doctorResult->num_rows > 0) {
+                while ($row = $doctorResult->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row['doc_id'] . "</td>";
+                    echo "<td>" . $row['doc_lname'] . "</td>";
+                    echo "<td>" . $row['doc_fname'] . "</td>";
+                    echo "<td>" . $row['doc_contact'] . "</td>";
+                    echo "<td>" . $row['doc_email'] . "</td>";
+                    echo "<td>" . $row['age'] . "</td>";
+                    echo "<td>" . $row['doc_spec'] . "</td>";
+                    echo "<td><i class='fa fa-trash delete-icon action-icon'></i> <i class='fa fa-pencil edit-icon action-icon'></i></td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='8'>No records found</td></tr>";
+            }
+          ?>
+        </tbody>
+      </table>
+      
   </div>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
 </body>
