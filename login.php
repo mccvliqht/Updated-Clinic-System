@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,16 +23,22 @@
                         <label for="username" class="username">Username</label>
                         <input type="text" name="username" required class="your-username">
                     </div>
-                    <div id="input-box">
-                    <div class="input-box">
-                        <label for="password" class="password">Password <a href="#" id="forgot-password" class="forgot">Forgot Password?</a></label>
+                    <div class="input-box2">
+                        <label for="password" class="password">Password <a href="" class="forgot">Forgot Password?</a></label>
                         <input type="password" name="password" required class="your-password">
                     </div>
-                    </div>
                     <div id="input-box">
-                    <div class="input-box">
+                    <!--<div class="input-box">
+                        <label for="user-type" class="user-type">User Type</label>
+                        <select id="user-type" name="user-type" required>
+                            <option value="" disabled selected></option>
+                            <option value="admin">Admin</option>
+                            <option value="doctor">Doctor</option>
+                        </select> 
+                    </div> -->
+                    <div class="input-box2">
                         <label for="confirm-password" class="password">Confirm Password</label>
-                        <input type="password" name="confirm_password" required class="your-cpassword">
+                        <input type="password" name="confirm_password" required class="your-password">
                     </div>
                     </div>
                     <button type="submit" class="login">Login</button> <!-- Added login button -->
