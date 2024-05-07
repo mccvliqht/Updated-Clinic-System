@@ -38,7 +38,7 @@
                         </div>
                         <div class="input-box">
                             <label for="contact" class="contact">Contact Number</label>
-                            <input type="tel" name="contact" required class="your-number"> <!-- Added name attribute -->
+                            <input type="number" name="contact" required class="your-number"> <!-- Added name attribute -->
                         </div>
                     </div>
                     <div id="input-box2">
