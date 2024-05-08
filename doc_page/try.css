@@ -1,88 +1,89 @@
-.navbar-title {
-  text-align: center;
-  font-size: 25px;
-  color: #000000; /* Adjust color as needed */
+/*For navigation*/
+
+#BarsNav {
+  padding-left: 15px;
+    padding-top: 15px;
+    display: flex;
 }
 
+#mylogo {
+  padding: 20px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 60%;
+  margin-bottom: 20px;
+}
+
+
+
+#logout {
+  bottom: 25px;
+  left: 0px;
+  position: absolute;
+  padding: 0px 0px 50px 10px;
+  font-size: 30px; 
+  cursor: pointer;
+}
+
+.fa {
+  font-size: 40px;
+  margin-right: 8px;
+}
+
+
+  .sidenav {
+    height: 100%;
+    width: 0; 
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    box-shadow: 10px 0px 5px 0px lightgray;
+  }
+
+  .doctor_name {
+    font-size: 20px !important;
+  }
+
+  .sidenav a {
+    padding: 8px 10px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #000000;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #ababab;
+    text-decoration: underline;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+/****************/
 body {
   margin: 0;
   padding: 0;
   max-width: 100%;
+  font-family: "Lato", sans-serif;
 }
 
-.sidebar {
-  height: 100%;
-  width: 250px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  padding-top: 30px;
-  transition: width 0.1s ease, margin-left 0.1s ease, box-shadow 0.2s ease;
-  box-shadow: 0 0 15px rgba(165, 144, 144, 0.5);
-  z-index: 1;
-}
 
-.sidebar a {
-  color: inherit; 
-  text-decoration: none; 
-}
-
-.sidebar a:hover {
-  color: inherit; 
-}
-
-.sidebar a:visited {
-  color: inherit; 
-}
-
-.navbar {
-  padding: 10px;
-}
-
-.nav-links {
-  list-style: none;
-  padding: 0;
-}
-
-.nav-links li {
-  padding: 15px;
-  color: #000000;
-  cursor: pointer;
-}
-
-.nav-links li:hover {
-  background-color: #7da0ca;
-}
-
-.nav-links li i {
-  margin-right: 10px;
-}
 
 .content {
-  padding: 20px;
   transition: margin-left 0.1s ease; 
-}
-
-.sidebar.collapsed {
-  width: 50px;
-}
-
-.sidebar.collapsed .nav-links li {
-  text-align: center;
-  padding: 15px 0;
-}
-
-.sidebar.collapsed .nav-links li i {
-  margin-right: 0;
-}
-
-.sidebar.collapsed .nav-links li span {
-  display: none;
-}
-
-.content.expanded {
-  margin-left: 50px;
 }
 
 .content .profile-container {
@@ -207,114 +208,3 @@ hr {
   font-size: 30px;
 }
 
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
-}
-
-.toolbar__search {
-  display: flex;
-  align-items: center;
-}
-
-.toolbar__search input[type="text"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px 0 0 4px;
-  width: 200px;
-}
-
-.toolbar__search .search-button {
-  padding: 8px;
-  background-color: #7da0ca;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-}
-
-.toolbar__search .search-button:hover {
-  background-color: #5e8ac0;
-}
-
-.toolbar__filter button {
-  padding: 8px 16px;
-  background-color: #7da0ca;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.toolbar__filter button:hover {
-  background-color: #5e8ac0;
-}
-
-.doctor-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 35px;
-  border: none; /* Remove the outer border */
-}
-
-.doctor-table th,
-.doctor-table td {
-  padding: 16px; /* Increase padding to make rows chunkier */
-  text-align: left;
-}
-
-.doctor-table th {
-  background-color: #f2f2f2;
-}
-
-.doctor-table tbody tr {
-  background-color: #f9f9f9; /* Gray background for all rows */
-}
-
-.doctor-table tbody tr:hover {
-  background-color: #f5f5f5; /* Lighter gray background on hover */
-}
-
-.doctor-table tbody tr:not(:last-child) td {
-  border-bottom: 1px solid #ebe8e8; /* Add bottom border to all rows except the last one */
-}
-
-.action-icon {
-  color: #6c757d; /* Define your desired grayish blue color */
-  cursor: pointer;
-}
-
-.action-icon:hover {
-  color: #007bff; /* Change color on hover to blue */
-}
-
-
-.appointment-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 35px;
-}
-
-.appointment-table th,
-.appointment-table td {
-  padding: 12px; /* Adjusted padding */
-  text-align: left;
-  border-bottom: 1px solid #ddd; 
-}
-
-.appointment-table th {
-  background-color: #f2f2f2;
-  font-weight: bold; 
-  color: #333; 
-}
-
-.appointment-table tbody tr {
-  background-color: #fff;
-}
-
-.appointment-table tbody tr:hover {
-  background-color: #f5f5f5;
-}

@@ -25,7 +25,7 @@ function toggleSidebar() {
     content.style.transition = '';
     
     // Adjust content's margin-left after transition re-enabled
-    const contentMargin = sidebar.classList.contains('collapsed') ? '50px' : '250px';
+    const contentMargin = sidebar.classList.contains('collapsed') ? '15px' : '250px';
     content.style.marginLeft = contentMargin;
   }, 50);
 }

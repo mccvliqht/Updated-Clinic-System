@@ -4,15 +4,22 @@ session_start(); // Start the session
 // Include your database configuration file
 include '../config.php'; 
 
-// Check if the session variable is set
+$firstName = '';
+$lastName = '';
+$username = '';
+$email = '';
+$contact = '';
+$specialization = '';
+$birthdate = '';
+
 if(isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
     // Prepare SQL statement to fetch account details
-    $sql = "SELECT doc_id, doc_fname, doc_lname, doc_spec, doc_birthdate, doc_email, doc_contact, lgn_username 
-            FROM tblDoctor
-            INNER JOIN tblLogin ON tblDoctor.lgn_id = tblLogin.lgn_id 
-            WHERE tblLogin.lgn_username = ?";
+    $sql = "SELECT doc_fname, doc_lname, doc_email, doc_contact, doc_spec, doc_birthdate, lgn_username
+        FROM tbldoctor
+        INNER JOIN tblLogin ON tbldoctor.lgn_id = tblLogin.lgn_id
+        WHERE tblLogin.lgn_username = ?";
 
     // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
@@ -27,19 +34,20 @@ if(isset($_SESSION['username'])) {
     // Check if username exists
     if ($stmt->num_rows > 0) {
         // Bind result variables
-        $stmt->bind_result($doc_id, $doc_fname, $doc_lname, $doc_spec, $doc_birthdate, $doc_email, $doc_contact, $lgn_username);
+      $stmt->bind_result($doc_fname, $doc_lname, $doc_email, $doc_contact, $doc_spec, $doc_birthdate, $lgn_username);
 
-        // Fetch result
-        $stmt->fetch();
+      // Fetch result
+      $stmt->fetch();
 
-        // Assign fetched values to variables
-        $firstName = $doc_fname;
-        $lastName = $doc_lname;
-        $email = $doc_email;
-        $contact = $doc_contact;
-        $birthdate = $doc_birthdate;
-        $specialization = $doc_spec;
-        $username = $lgn_username;
+      // Assign fetched values to variables
+      $firstName = $doc_fname;
+      $lastName = $doc_lname;
+      $email = $doc_email;
+      $contact = $doc_contact;
+      $username = $lgn_username;
+      $specialization = $doc_spec;
+      $birthdate = $doc_birthdate;
+
     }
 
     // Predefined dark colors
@@ -61,24 +69,27 @@ if(isset($_SESSION['username'])) {
     $randomColor = $darkColors[array_rand($darkColors)];
 }
 
-if(isset($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['contact'], $_POST['birthdate'], $_POST['specialization'], $_POST['username'])) {
+$stmt->close(); 
+
+if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['email'], $_POST['contact'], $_POST['specialization'], $_POST['birthdate'])) {
     $oldUsername = $_SESSION['username'];
     $newUsername = $_POST['username'];
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $email = $_POST['email'];
     $contact = $_POST['contact'];
-    $birthdate = $_POST['birthdate'];
     $specialization = $_POST['specialization'];
+    $birthdate = $_POST['birthdate'];
+
 
     // Start a transaction
     $conn->begin_transaction();
 
     try {
         // Prepare SQL statement to update account details in tblAdmin
-        $sqlAdmin = "UPDATE tblDoctor 
-                     INNER JOIN tblLogin ON tblDoctor.lgn_id = tblLogin.lgn_id 
-                     SET doc_id = ?, doc_fname = ?, doc_lname = ?, doc_spec = ?, doc_birthdate = ?, doc_email = ?, doc_contact = ?, tblLogin.lgn_username = ?
+        $sqlAdmin = "UPDATE tbldoctor 
+                     INNER JOIN tblLogin ON tbldoctor.lgn_id = tblLogin.lgn_id 
+                     SET doc_fname = ?, doc_lname = ?, doc_email = ?, doc_contact = ?, doc_spec = ?, doc_birthdate = ?, tblLogin.lgn_username = ?
                      WHERE tblLogin.lgn_username = ?";
 
         // Prepare the SQL statement for updating admin details
@@ -89,7 +100,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['conta
         }
 
         // Bind parameters and execute statement
-        $stmtAdmin->bind_param("ssssssss", $firstName, $lastName, $email, $contact, $birthdate, $specialization, $newUsername, $oldUsername);
+        $stmtAdmin->bind_param("ssssssss", $firstName, $lastName, $email, $contact, $specialization, $birthdate, $newUsername, $oldUsername);
         if (!$stmtAdmin->execute()) {
             throw new Exception("Execute failed: (" . $stmtAdmin->errno . ") " . $stmtAdmin->error);
         }
@@ -120,38 +131,41 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['conta
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doc Page</title>
-  <link rel="stylesheet" href="try.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Home</title>
+  
+    <link rel="stylesheet" href="try.css?v=<?php echo time(); ?>">
+    <link rel="icon" href="LogoClinic.png" type="image/png">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
-  <div class="sidebar">
-    <div class="navbar">
-      <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
-      <button class="nav-icon" onclick="toggleSidebar()">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-      </button>
-    </div>
-    <ul class="nav-links">
-        <?php if($firstName && $lastName): ?>
-            <li>
-                <span>
-                    <i class="fa fa-user-circle"></i>
-                    <?php echo $firstName . ' ' . $lastName; ?>
-                </span>
-            </li>
-        <?php endif; ?>
-        <li><a href="doctor_landing_page.php"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
-        <li><a href="doctor.php"><i class="fa fa-stethoscope"></i> <span>Doctor</span></a></li>
-        <li><a href="patients.php"><i class="fa fa-user"></i> <span>Patient</span></a></li>
-        <li><a href="Schedules.php"><i class="fa fa-clipboard"></i> <span>Appointment</span></a></li>
-        <li><a href="doctor_profile.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
-    </ul>
-  </div>
+<span id="BarsNav" style="font-size:30px;cursor:pointer" onclick="openNav()"><i class="fa fa-bars"></i></span>
+
+<div id="mySidenav" class="sidenav">
+    <img src="Logo.png" id="mylogo" alt="Soriano Clinic logo">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <?php if($firstName && $lastName): ?>
+        <a href="doctor_profile.php" class="doctor_name"><i class="fa fa-user-circle"></i><?php echo $firstName . ' ' . $lastName; ?></a>
+    <?php endif; ?>    
+    <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
+    <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
+    <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
+    <span title="Logout"><i id="logout" class="fa fa-sign-out"></i></span>
+</div>
+
+<!--- walang gagalaw nito  --->
+<div class="sidebar">
+<div class="navbar">
+<div class="navbar-title" id="navbarTitle"></div>
+</div>
+</div>
+<!--- walang gagalaw nito  --->
+
+
+
+
   <div class="content">
     <div class="profile-container">
       <div class="profile-letter" style="background-color: <?php echo $randomColor; ?>">
@@ -192,12 +206,12 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['conta
             <input type="text" id="contact" name="contact" value="<?php echo htmlspecialchars($contact); ?>" class="edit-input" readonly>
           </div>
           <div class="form-group">
-            <label for="birthdate">Birthdate:</label>
-            <input type="date" id="birthdate" name="birthdate" value="<?php echo htmlspecialchars($birthdate); ?>" class="edit-input" readonly>
+            <label for="email">Specialization:</label>
+            <input type="text" id="specialization" name="specialization" value="<?php echo htmlspecialchars($specialization); ?>" class="edit-input" readonly>
           </div>
           <div class="form-group">
-            <label for="specialization">Specialization:</label>
-            <input type="text" id="specialization" name="specialization" value="<?php echo htmlspecialchars($specialization); ?>" class="edit-input" readonly>
+            <label for="birthdate">Birthdate:</label>
+            <input type="date" id="birthdate" name="birthdate" value="<?php echo htmlspecialchars($birthdate); ?>" class="edit-input" readonly>
           </div>
           <div class="button-group">
             <button type="button" id="editBtn">Edit Details</button>
@@ -229,6 +243,17 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['conta
     </div>
 
 
-  <script src="try.js"></script>
+  <script src="try.js?v=<?php echo time(); ?>"></script>
+  <script>
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+</script>
+  
 </body>
 </html>
