@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2024 at 04:11 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 08, 2024 at 02:35 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `tbladmin` (
   `adm_id` int(11) NOT NULL,
   `adm_fname` varchar(100) NOT NULL,
   `adm_lname` varchar(100) NOT NULL,
-  `adm_contact` int(11) NOT NULL,
+  `adm_contact` varchar(20) NOT NULL,
   `adm_email` varchar(50) DEFAULT NULL,
   `lgn_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,7 +41,7 @@ CREATE TABLE `tbladmin` (
 --
 
 INSERT INTO `tbladmin` (`adm_id`, `adm_fname`, `adm_lname`, `adm_contact`, `adm_email`, `lgn_id`) VALUES
-(5002, 'Micah Kristine', 'Anaya', 2147483647, 'micahanaya09@gmail.com', 23);
+(5003, 'Micah', 'Anaya', '09817229282', 'micahanaya1009@gmail.com', 31);
 
 -- --------------------------------------------------------
 
@@ -90,8 +90,7 @@ CREATE TABLE `tbldoctor` (
   `doc_spec` varchar(100) DEFAULT NULL,
   `doc_birthdate` date DEFAULT NULL,
   `doc_email` varchar(100) DEFAULT NULL,
-  `doc_contact` bigint(11) NOT NULL,
-  `sched_id` int(11) DEFAULT NULL,
+  `doc_contact` varchar(20) NOT NULL,
   `lgn_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -99,14 +98,14 @@ CREATE TABLE `tbldoctor` (
 -- Dumping data for table `tbldoctor`
 --
 
-INSERT INTO `tbldoctor` (`doc_id`, `doc_fname`, `doc_lname`, `doc_spec`, `doc_birthdate`, `doc_email`, `doc_contact`, `sched_id`, `lgn_id`) VALUES
-(121, 'Micah Kristine', 'Anaya', NULL, NULL, 'micahanaya09@gmail.com', 2147483647, NULL, 22),
-(122, 'George', 'Mendoza', 'Geriatrician', NULL, 'gmendoza@gmail.com', 9729163528, NULL, 24),
-(123, 'Mateo', 'Cantiveros', 'Physician', NULL, 'mcantiveros@gmail.com', 9097251723, NULL, 25),
-(124, 'Robert', 'Aquino', 'Cardiologist', NULL, 'raquino@gmail.com', 9873621034, NULL, 26),
-(125, 'Maria Christine', 'Bondoc', 'Pediatrician', NULL, 'mcbondoc@gmail.com', 9026284521, NULL, 27),
-(126, 'Carla', 'Mendez', 'Gastroenterologist', NULL, 'cmendez@gmail.com', 9821622453, NULL, 28),
-(127, 'Luisa', 'Tanzo', 'Dentist', NULL, 'ltanzo@gmail.com', 9555728328, NULL, 29);
+INSERT INTO `tbldoctor` (`doc_id`, `doc_fname`, `doc_lname`, `doc_spec`, `doc_birthdate`, `doc_email`, `doc_contact`, `lgn_id`) VALUES
+(122, 'George', 'Mendoza', 'Geriatrician', NULL, 'gmendoza@gmail.com', '9729163528', 24),
+(123, 'Mateo', 'Cantiveros', 'Physician', NULL, 'mcantiveros@gmail.com', '9097251723', 25),
+(124, 'Robert', 'Aquino', 'Cardiologist', NULL, 'raquino@gmail.com', '9873621034', 26),
+(125, 'Maria Christine', 'Bondoc', 'Pediatrician', NULL, 'mcbondoc@gmail.com', '9026284521', 27),
+(126, 'Carla', 'Mendez', 'Gastroenterologist', NULL, 'cmendez@gmail.com', '9821622453', 28),
+(127, 'Luisa', 'Tanzo', 'Dentist', NULL, 'ltanzo@gmail.com', '9555728328', 29),
+(129, 'Krizelle', 'Anaya', NULL, NULL, 'micahanaya09@gmail.com', '09817229282', 32);
 
 -- --------------------------------------------------------
 
@@ -128,13 +127,15 @@ CREATE TABLE `tbllogin` (
 
 INSERT INTO `tbllogin` (`lgn_id`, `lgn_username`, `lgn_password`, `user_type`, `sys_pass`) VALUES
 (22, 'mikaaa', '$2y$10$7UWjvQ6f4DiPixGNsRL/m.B4I8TO.qrUUAFjL95qoUZ.7Ei0l3W72', 'doctor', 0),
-(23, 'micah', '$2y$10$4D9VVSqOsOi9cX5ByzFcQ.WSenhTP0tKtsuYlkOnhRNh7XT5Wm.ii', 'admin', 0),
 (24, 'doc_mendoza', '$2y$10$ScZR.wEwLcmpOThIUz3hje/54dz5HwaqYVYKyVItilqHWGMKC5euC', 'doctor', 0),
 (25, 'doc_cantiveros', '$2y$10$4AHTj5VdyRvToO63GHftq.1dJE9w7bgAbYvExysp.IPGntYyZpirG', 'doctor', 0),
 (26, 'doc_aquino', '$2y$10$OGZKXGuNRuVD6Zy98OA4JeB.ek4eP4N8/NDyGrIMTi3BRGOtjF1im', 'doctor', 0),
 (27, 'doc_bondoc', '$2y$10$H8sCJdk21D6Qtndi8MTwNe.JSSXcZGqWMIOUB74A0MXzUKNOHbJoq', 'doctor', 0),
 (28, 'doc_mendez', '$2y$10$oDUt4w286TAjVHs.xsqEWuHK5GrlDT3XU1NijNrrLqAKHHQ6vjKLC', 'doctor', 0),
-(29, 'doc_tanzo', '$2y$10$F94.0gjN0X1ja8gSFmJrYe5bjXdzQV2MZ0WwpkcXfwJI6/ezX.Rgu', 'doctor', 0);
+(29, 'doc_tanzo', '$2y$10$F94.0gjN0X1ja8gSFmJrYe5bjXdzQV2MZ0WwpkcXfwJI6/ezX.Rgu', 'doctor', 0),
+(30, 'docmika', '$2y$10$RsEt/UoG3hEdHdJzHkL7w.CZcHr0vg0Yb5j7SL6BPmc0cH0KxNM.K', 'doctor', 0),
+(31, 'adminmika', '$2y$10$rQB5snXeMIgmcWc7qLoNpOdXXq5iGyt7swFCO7LBjCq4Jhujq5CX.', 'admin', 0),
+(32, 'krizelle', '$2y$10$V/Vg6bsceVDfpEwu4i.tyOpmLmLybWlUt7/n9B4b1Aep.FvKVgLKe', 'doctor', 0);
 
 -- --------------------------------------------------------
 
@@ -185,8 +186,16 @@ CREATE TABLE `tblschedule` (
   `sched_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
-  `sched_limit` int(11) NOT NULL
+  `sched_limit` int(11) NOT NULL,
+  `doc_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblschedule`
+--
+
+INSERT INTO `tblschedule` (`sched_id`, `sched_date`, `start_time`, `end_time`, `sched_limit`, `doc_id`) VALUES
+(211, '2024-05-09', '10:00:00', '17:00:00', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -208,7 +217,7 @@ CREATE TABLE `tblservice` (
 INSERT INTO `tblservice` (`serv_id`, `serv_name`, `serv_desc`, `serv_duration`) VALUES
 (4321, 'Blood Test', 'Medical tests can be done on people of all ages to find problems, track treatments, and assess overall health, including checking blood cells, cholesterol levels, and detecting infections or illnesses.', '30 minutes'),
 (4322, 'Vaccination', 'Vaccination not only protects individuals but also lowers the prevalence of infectious diseases, promoting public health and well-being for all people. Vaccines include Pneumonia, Anti-Rabies, and Birth Control.', '30 minutes'),
-(4323, 'Minor Illness', "Focuses on managing symptoms, alleviating discomfort, and supporting the body's natural healing process with the guidance of healthcare providers. Treatments include Cold, Flu, and Non-Severe asthma attack.", '30 minutes'),
+(4323, 'Minor Illness', 'Focuses on managing symptoms, alleviating discomfort, and supporting the body\'s natural healing process with the guidance of healthcare providers. Treatments include Cold, Flu, and Non-Severe asthma attack.', '30 minutes'),
 (4324, 'Chronic Disease', 'The treating and controlling long-term health conditions like diabetes, involves coordinated efforts among healthcare providers in clinics to assist patients in managing their condition better.', '30 minutes'),
 (4325, 'Ultrasound', 'Allows healthcare professionals to visualize internal structures such as detecting abnormalities in organs like the liver, kidneys, and fetal development during pregnancy and the heart.', '30 minutes'),
 (4326, 'Dental', 'Oral health care services are provided by our Clinic which includes Regular check-ups, Cleaning, Whitening, Dental Crowns and Bridges.', '30 minutes');
@@ -238,7 +247,6 @@ ALTER TABLE `tblappoint`
 --
 ALTER TABLE `tbldoctor`
   ADD PRIMARY KEY (`doc_id`),
-  ADD KEY `sched_id` (`sched_id`),
   ADD KEY `lgn_id` (`lgn_id`);
 
 --
@@ -257,7 +265,8 @@ ALTER TABLE `tblpatient`
 -- Indexes for table `tblschedule`
 --
 ALTER TABLE `tblschedule`
-  ADD PRIMARY KEY (`sched_id`);
+  ADD PRIMARY KEY (`sched_id`),
+  ADD KEY `fk_doc_id` (`doc_id`);
 
 --
 -- Indexes for table `tblservice`
@@ -273,7 +282,7 @@ ALTER TABLE `tblservice`
 -- AUTO_INCREMENT for table `tbladmin`
 --
 ALTER TABLE `tbladmin`
-  MODIFY `adm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5003;
+  MODIFY `adm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5004;
 
 --
 -- AUTO_INCREMENT for table `tblappoint`
@@ -285,13 +294,13 @@ ALTER TABLE `tblappoint`
 -- AUTO_INCREMENT for table `tbldoctor`
 --
 ALTER TABLE `tbldoctor`
-  MODIFY `doc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `doc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `tbllogin`
 --
 ALTER TABLE `tbllogin`
-  MODIFY `lgn_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `lgn_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tblpatient`
@@ -303,7 +312,7 @@ ALTER TABLE `tblpatient`
 -- AUTO_INCREMENT for table `tblschedule`
 --
 ALTER TABLE `tblschedule`
-  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
 
 --
 -- AUTO_INCREMENT for table `tblservice`
@@ -330,11 +339,10 @@ ALTER TABLE `tblappoint`
   ADD CONSTRAINT `tblappoint_ibfk_3` FOREIGN KEY (`serv_id`) REFERENCES `tblservice` (`serv_id`);
 
 --
--- Constraints for table `tbldoctor`
+-- Constraints for table `tblschedule`
 --
-ALTER TABLE `tbldoctor`
-  ADD CONSTRAINT `tbldoctor_ibfk_1` FOREIGN KEY (`sched_id`) REFERENCES `tblschedule` (`sched_id`),
-  ADD CONSTRAINT `tbldoctor_ibfk_2` FOREIGN KEY (`lgn_id`) REFERENCES `tbllogin` (`lgn_id`);
+ALTER TABLE `tblschedule`
+  ADD CONSTRAINT `fk_doc_id` FOREIGN KEY (`doc_id`) REFERENCES `tbldoctor` (`doc_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
