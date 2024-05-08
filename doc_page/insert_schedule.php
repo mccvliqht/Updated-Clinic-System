@@ -17,9 +17,10 @@ if ($conn->connect_error) {
 $date = $_POST['date'];
 $start_time = $_POST['start_time'];
 $end_time = $_POST['end_time'];
+$doc_id = $_POST['doc_id'];
 
 // Prepare the SQL statement
-$sql = "INSERT INTO tblschedule (sched_date, start_time, end_time) VALUES ('$date', '$start_time', '$end_time')";
+$sql = "INSERT INTO tblschedule (sched_date, start_time, end_time, doc_id) VALUES ('$date', '$start_time', '$end_time', '$doc_id')";
 
 // Execute the SQL statement
 if ($conn->query($sql) === TRUE) {

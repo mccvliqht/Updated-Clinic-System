@@ -1,3 +1,59 @@
+<?php
+  session_start(); 
+  
+  include '../config.php'; 
+  
+  $doc_id = '';
+  
+  if(isset($_SESSION['username'])) {
+      $username = $_SESSION['username'];
+  
+      $sql = "SELECT doc_id
+              FROM tblDoctor 
+              INNER JOIN tblLogin ON tblDoctor.lgn_id = tblLogin.lgn_id 
+              WHERE tblLogin.lgn_username = ?";
+  
+      // Prepare the SQL statement
+      $stmt = $conn->prepare($sql);
+  
+      // Bind parameters and execute statement
+      $stmt->bind_param("s", $username);
+      $stmt->execute();
+  
+      // Store result
+      $stmt->store_result();
+  
+      // Check if username exists
+      if ($stmt->num_rows > 0) {
+          // Bind result variables
+          $stmt->bind_result($doc_id);
+  
+          // Fetch result
+          $stmt->fetch();
+  
+          // Assign fetched values to variables
+          $doc_id = $doc_id; // Use the correct variable name
+
+      }
+  }
+  
+  $stmt->close(); // Close statement
+
+  if(isset($_POST['date']) && isset($_POST['start_time']) && isset($_POST['end_time'])) {
+    $date = $_POST['date'];
+    $start_time = $_POST['start_time'];
+    $end_time = $_POST['end_time'];
+    
+    // Insert the schedule into the database
+    $insert_sql = "INSERT INTO tblSchedule (doc_id, sched_date, start_time, end_time) VALUES (?, ?, ?, ?)";
+    $insert_stmt = $conn->prepare($insert_sql);
+    $insert_stmt->bind_param("isss", $doc_id, $date, $start_time, $end_time);
+    $insert_stmt->execute();
+    $insert_stmt->close();
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,48 +79,42 @@
     
   <div id="schedContainer">
     <div id="mainSched">
+        <h3>ADD SCHEDULE</h3>
+        <form action="insert_schedule.php" method="post">
+            <div class="boxSched">
+                <label for="date">Select Date</label><br>
+                <input type="date" name="date"><br>
+            </div>
 
-      <h3>ADD SCHEDULE</h3>
-      <form action="insert_schedule.php" method="post">
-        <div class="boxSched">
-          <label for="date">Select Date</label><br>
-          <input type="date" name="date"><br>
-        </div>
-
-        <div class="boxSched">
-          <label for="time">Start Time</label><br>
-          <input type="time" name="start_time"><br>
-        </div>
-        
-        <div class="boxSched">
-          <label for="">End Time</label><br>
-          <input type="time" name="end_time"><br><br>
-          <input type="submit" value="Submit"><br>
-        </div>
-        
-        
-      </form>
-
+            <div class="boxSched">
+                <label for="time">Start Time</label><br>
+                <input type="time" name="start_time"><br>
+            </div>
+            
+            <div class="boxSched">
+                <label for="">End Time</label><br>
+                <input type="time" name="end_time"><br><br>
+                <input type="hidden" name="doc_id" value="<?php echo $doc_id; ?>">
+                <input type="submit" value="Submit"><br>
+            </div>
+        </form>
     </div>
 
     <div id="tableSched">
-    <h3>MY SCHEDULES</h3><br>
-      <table>
-          <tr>
-              <th>Schedules ID</th>
-              <th>Schedules Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-          </tr>
-          <?php include 'display_doc_schedules.php'; ?>
-          <?php
-            $result = $conn->query($sql);
-
-            // Check if query was successful
-            if ($result === false) {
-                die("Error executing the query: " . $conn->error);
-            }
-
+        <h3>MY SCHEDULES</h3><br>
+        <table>
+            <tr>
+                <th>Schedules ID</th>
+                <th>Schedules Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            <?php
+            $sql_display = "SELECT * FROM tblSchedule WHERE doc_id = ?";
+            $stmt_display = $conn->prepare($sql_display);
+            $stmt_display->bind_param("i", $doc_id);
+            $stmt_display->execute();
+            $result = $stmt_display->get_result();
 
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
@@ -73,23 +123,19 @@
                     echo "<td>".$row["sched_date"]."</td>";
                     echo "<td>".$row["start_time"]."</td>";
                     echo "<td>".$row["end_time"]."</td>";
-                  echo "</tr>";
-              }
-          } else {
-              echo "<tr><td colspan='4'>No Schedules found</td></tr>";
-          }
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='4'>No Schedules found</td></tr>";
+            }
 
-          $result->free();
-
-          // Close connection
-          $conn->close();
-
-          ?>
-      </table>
+            $stmt_display->close();
+            ?>
+        </table>
     </div>
-  </div>
-        
-    <script>
+</div>
+
+<script>
     function openNav() {
       document.getElementById("mySidenav").style.width = "250px";
     }
@@ -98,6 +144,6 @@
       document.getElementById("mySidenav").style.width = "0";
     }
     </script>
-       
-    </body>
+
+</body>
 </html>
