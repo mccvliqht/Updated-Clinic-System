@@ -6,7 +6,22 @@
     <title>Barangay Soriano Health Center</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Elsie&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
+    <script>
+      window.addEventListener('scroll', function() {
+  var header = document.querySelector('.header');
+  if (window.scrollY > 0) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+  });
+    </script>
+  </head>
+
 <body>
     <!--Navbar-->
     <header>
@@ -17,10 +32,52 @@
         <li><a href="home.html" class="home">Home</a></li>
         <li><a href="service.html" class="services">Services</a></li>
         <li><a href="ourdoc.html" class="doctors">Doctors</a></li>
-        <li><a href="#contacts" class="contacts">Contacts</a></li>
+        <li><a href="contacts.html" class="contacts">Contacts</a></li>
         <li><a href="appointment.html" class="make-active">Make an Appointment</a></li>
         </ul>
     </header>
-   
+   <div class="cboxes">
+   <h1 class="ch1">Get in Touch</h1>
+   <p class="cp">We would love to hear your concerns.</p>
+   <div id="contact-box">
+    <div class="contact-box" id="cbox">
+        <img src="img/phone.png" alt=""> 
+        <h2>Phone</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, enim?</p>
+      </div>
+
+      <div class="contact-box" id="cbox">
+        <img src="img/email.png" alt=""> 
+        <h2>Email</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, cupiditate?</p>
+      </div>
+
+      <div class="contact-box" id="cbox">
+        <img src="img/address.png" alt=""> 
+        <h2>Address</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, officiis.</p>
+      </div>
+      </div>
+      
+      <div id="contact-box">
+      <div class="contact-box" id="cbox">
+        <img src="img/facebook.png" alt=""> 
+        <h2>Facebook</h2>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, voluptatum.</p>
+      </div>
+      
+      <div class="contact-box" id="cbox">
+        <img src="img/instagram.png" alt=""> 
+        <h2>Instagram</h2>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis, nam!</p>
+      </div>
+
+    <div class="contact-box" id="cbox">
+        <img src="img/twitter.png" alt="">
+        <h2>Twitter</h2>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda, necessitatibus?</p>
+      </div>
+      </div>
+    </div>
 </body>
 </html>
