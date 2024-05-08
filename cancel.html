@@ -19,17 +19,15 @@
         </div>
 
 
-    <div class="cancel-container">
-            <h1>Cancel an Appointment</h1>
-            <p>To proceed with canceling your appointments, please provide the appointment ID below.</p>
-        
-            <label for="appointment-id" class="appointmentID">Input Appointment ID: </label>
-                    <input type="number" required class="user-appointment-id">
-            <button id="proceed-btn">Proceed</button>
-    </div>
+        <form action="validate-cancel.php" method="post">
+            <div class="cancel-container">
+                <h1>Cancel an Appointment</h1>
+                <p>To proceed with canceling your appointments, please provide the appointment ID below.</p>
+
+                    <label for="appointment-id" class="appointmentID">Input Appointment ID: </label>
+                            <input type="number" required name="appointment_id" id="appointment_id" class="appointment-id">
+                    <button id="proceed-btn">Proceed</button>
 
     <script src="script.js"></script>
 </body>
 </html>
-
-
