@@ -98,12 +98,12 @@ $appointmentResult = $conn->query($appointmentSql);
     <h2>Appointments List</h2>
     <div class="toolbar">
       <div class="toolbox-left">
-        <select name="status" id="status">
-          <option value="all">All</option>
-          <option value="upcoming">Upcoming</option>
-          <option value="completed">Completed</option>
-          <option value="canceled">Canceled</option>
-        </select>
+        <div class="status-buttons">
+          <button class="status-button" data-status="all">All</button>
+          <button class="status-button" data-status="upcoming">Upcoming</button>
+          <button class="status-button" data-status="completed">Completed</button>
+          <button class="status-button" data-status="canceled">Canceled</button>
+        </div>
       </div>
       <div class="toolbar__search">
         <input type="text" placeholder="Search...">
@@ -112,7 +112,7 @@ $appointmentResult = $conn->query($appointmentSql);
       <div class="toolbar__filter">
         <button>Filter</button>
       </div>
-    </div>
+  </div>
     <table class="appointment-table">
       <thead>
         <tr>
