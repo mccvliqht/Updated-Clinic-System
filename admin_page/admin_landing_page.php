@@ -39,6 +39,24 @@ if(isset($_SESSION['username'])) {
     }
 }
 
+// Count doctors
+$sqlDoctors = "SELECT COUNT(*) AS totalDoctors FROM tbldoctor";
+$resultDoctors = $conn->query($sqlDoctors);
+$rowDoctors = $resultDoctors->fetch_assoc();
+$totalDoctors = $rowDoctors['totalDoctors'];
+
+// Count patients
+$sqlPatients = "SELECT COUNT(*) AS totalPatients FROM tblpatient";
+$resultPatients = $conn->query($sqlPatients);
+$rowPatients = $resultPatients->fetch_assoc();
+$totalPatients = $rowPatients['totalPatients'];
+
+// Count appointments
+$sqlAppointments = "SELECT COUNT(*) AS totalAppointments FROM tblappoint";
+$resultAppointments = $conn->query($sqlAppointments);
+$rowAppointments = $resultAppointments->fetch_assoc();
+$totalAppointments = $rowAppointments['totalAppointments'];
+
 $stmt->close(); // Close statement
 $conn->close(); // Close connection
 ?>
@@ -79,10 +97,32 @@ $conn->close(); // Close connection
         <li><a href="account_details.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
     </ul>
   </div>
-  <div class="content">
-    <!-- Main content goes here -->
+    <div class="content">
+      <div class="dashboard">
+        <h2>Dashboard</h2>
+        <div class="dashboard-box">
+          <h3>Total Doctors</h3>
+          <p><?php echo $totalDoctors; ?></p>
+        </div>
+        <div class="dashboard-box">
+          <h3>Total Patients</h3>
+          <p><?php echo $totalPatients; ?></p>
+        </div>
+        <div class="dashboard-box">
+          <h3>Total Appointments</h3>
+          <p><?php echo $totalAppointments; ?></p>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="calendar-header">
+          <h2>Date: <?php echo date('Y-m-d'); ?></h2>
+        </div>
+        <div class="calendar-grid">
+          <!-- Calendar grid content here -->
+        </div>
+      </div>
+
   </div>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
-
