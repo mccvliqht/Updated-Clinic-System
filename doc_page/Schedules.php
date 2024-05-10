@@ -1,14 +1,25 @@
 <?php
-  session_start(); 
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
+    // Redirect to the login page
+    header("location: ../login.php");
+    exit;
+}
+?>
+<?php
   
   include '../config.php'; 
   
   $doc_id = '';
+  $firstName = ''; 
+  $lastName = '';
   
   if(isset($_SESSION['username'])) {
       $username = $_SESSION['username'];
   
-      $sql = "SELECT doc_id
+      $sql = "SELECT doc_id, doc_fname, doc_lname
               FROM tblDoctor 
               INNER JOIN tblLogin ON tblDoctor.lgn_id = tblLogin.lgn_id 
               WHERE tblLogin.lgn_username = ?";
@@ -26,13 +37,15 @@
       // Check if username exists
       if ($stmt->num_rows > 0) {
           // Bind result variables
-          $stmt->bind_result($doc_id);
+          $stmt->bind_result($doc_id, $doc_fname, $doc_lname);
   
           // Fetch result
           $stmt->fetch();
   
           // Assign fetched values to variables
           $doc_id = $doc_id; // Use the correct variable name
+          $firstName = $doc_fname;
+          $lastName = $doc_lname;
 
       }
   }
@@ -66,15 +79,17 @@
     <span id="BarsNav" style="font-size:30px;cursor:pointer" onclick="openNav()"><i class="fa fa-bars"></i></span>
     
 </head>
-    <body>
+<body>
     <div id="mySidenav" class="sidenav">
       <img src="Logo.png" id="mylogo" alt="Soriano Clinic logo">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="doctor_profile.php"><i class="fa fa-user-circle"></i>Doctor Name</a>
+      <?php if($firstName && $lastName): ?>
+        <a href="doctor_profile.php" class="doctor_name"><i class="fa fa-user-circle"></i><?php echo $firstName . ' ' . $lastName; ?></a>
+      <?php endif; ?>   
       <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
       <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
       <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-      <span title="Logout"><i id="logout" class="fa fa-sign-out"></i></span>
+      <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
     </div>
     
   <div id="schedContainer">
@@ -101,13 +116,14 @@
     </div>
 
     <div id="tableSched">
-        <h3>MY SCHEDULES</h3><br>
+    <h3>MY SCHEDULES</h3><br>
         <table>
             <tr>
                 <th>Schedules ID</th>
                 <th>Schedules Date</th>
                 <th>Start Time</th>
                 <th>End Time</th>
+                <th>Action</th>
             </tr>
             <?php
             $sql_display = "SELECT * FROM tblSchedule WHERE doc_id = ?";
@@ -123,10 +139,16 @@
                     echo "<td>".$row["sched_date"]."</td>";
                     echo "<td>".$row["start_time"]."</td>";
                     echo "<td>".$row["end_time"]."</td>";
+                    echo "<td>";
+                    echo "<form action='delete_schedule.php' method='post'>";
+                    echo "<input type='hidden' name='sched_id' value='".$row["sched_id"]."'>";
+                    echo "<input type='submit' value='Delete'>";
+                    echo "</form>";
+                    echo "</td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='4'>No Schedules found</td></tr>";
+                echo "<tr><td colspan='5'>No Schedules found</td></tr>";
             }
 
             $stmt_display->close();

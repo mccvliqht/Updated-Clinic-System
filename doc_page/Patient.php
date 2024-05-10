@@ -1,3 +1,56 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
+    // Redirect to the login page
+    header("location: ../login.php");
+    exit;
+}
+?>
+<?php
+
+
+include '../config.php'; 
+
+$firstName = '';
+$lastName = '';
+
+if(isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
+
+    $sql = "SELECT doc_id, doc_fname, doc_lname 
+            FROM tblDoctor
+            INNER JOIN tblLogin ON tblDoctor.lgn_id = tblLogin.lgn_id 
+            WHERE tblLogin.lgn_username = ?";
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
+
+    // Bind parameters and execute statement
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+
+    // Store result
+    $stmt->store_result();
+
+    // Check if username exists
+    if ($stmt->num_rows > 0) {
+        // Bind result variables
+        $stmt->bind_result($doc_id, $doc_fname, $doc_lname);
+
+        // Fetch result
+        $stmt->fetch();
+
+        // Assign fetched values to variables
+        $firstName = $doc_fname;
+        $lastName = $doc_lname;
+    }
+    $stmt->close(); // Close statement
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +67,13 @@
     <div id="mySidenav" class="sidenav">
       <img src="Logo.png" id="mylogo" alt="Soriano Clinic logo">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="doctor_profile.php"><i class="fa fa-user-circle"></i>Doctor Name</a>
+      <?php if($firstName && $lastName): ?>
+        <a href="doctor_profile.php" class="doctor_name"><i class="fa fa-user-circle"></i><?php echo $firstName . ' ' . $lastName; ?></a>
+      <?php endif; ?>    
       <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
       <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
       <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-      <span title="Logout"><i id="logout" class="fa fa-sign-out"></i></span>
-    </div>
-    
-    <div>
-
+      <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
     </div>
 
     <div id="patientTable">

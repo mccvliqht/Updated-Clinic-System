@@ -1,5 +1,15 @@
 <?php
-session_start(); 
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
+    // Redirect to the login page
+    header("location: ../login.php");
+    exit;
+}
+?>
+
+<?php
 
 include '../config.php'; 
 
@@ -61,7 +71,7 @@ if(isset($_SESSION['username'])) {
     <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
     <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
     <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-    <span title="Logout"><i id="logout" class="fa fa-sign-out"></i></span>
+    <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
 </div>
 
 <h2 id="doclandh2" class="doctor_name">Welcome <?php echo $firstName . ' ' . $lastName; ?></h2>

@@ -1,5 +1,14 @@
 <?php
-session_start(); // Start the session
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
+    // Redirect to the login page
+    header("location: ../login.php");
+    exit;
+}
+?>
+<?php
 
 // Include your database configuration file
 include '../config.php'; 
@@ -152,21 +161,10 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
     <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
     <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
     <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-    <span title="Logout"><i id="logout" class="fa fa-sign-out"></i></span>
+    <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
 </div>
 
-<!--- walang gagalaw nito  --->
-<div class="sidebar">
-<div class="navbar">
-<div class="navbar-title" id="navbarTitle"></div>
-</div>
-</div>
-<!--- walang gagalaw nito  --->
-
-
-
-
-  <div class="content">
+<div class="content">
     <div class="profile-container">
       <div class="profile-letter" style="background-color: <?php echo $randomColor; ?>">
         <?php echo $firstName ? strtoupper(substr($firstName, 0, 1)) : ''; ?>
@@ -206,7 +204,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
             <input type="text" id="contact" name="contact" value="<?php echo htmlspecialchars($contact); ?>" class="edit-input" readonly>
           </div>
           <div class="form-group">
-            <label for="email">Specialization:</label>
+            <label for="specialization">Specialization:</label>
             <input type="text" id="specialization" name="specialization" value="<?php echo htmlspecialchars($specialization); ?>" class="edit-input" readonly>
           </div>
           <div class="form-group">
@@ -241,10 +239,10 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
         </form>
       </div>
     </div>
+  </div>
 
-
-  <script src="try.js?v=<?php echo time(); ?>"></script>
-  <script>
+<script>
+  // Function to enable editing of input fields
   function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
@@ -253,7 +251,23 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 
+
+  function enableEdit() {
+    document.querySelectorAll('.edit-input').forEach(function(input) {
+      input.removeAttribute('readonly');
+    });
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('saveBtn').style.display = 'inline-block';
+  }
+
+  document.getElementById('editBtn').addEventListener('click', enableEdit);
+
+  // Function to prevent form resubmission on page reload
+  if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+  }
+
+
 </script>
-  
 </body>
 </html>
