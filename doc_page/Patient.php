@@ -117,7 +117,7 @@ if(isset($_SESSION['username'])) {
                   echo "</tr>";
               }
           } else {
-              echo "<tr><td colspan='3'>No records found</td></tr>";
+              echo "<tr><td colspan='10'>No records found</td></tr>";
           }
 
           $result->free();
