@@ -169,6 +169,10 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+input[type="submit"]:hover {
+  background-color: rgb(0, 80, 186);
+}
+
 #tableSched {
   display: table;
   margin: 10px auto 10px; /* Adjust top margin to move the table up slightly */
