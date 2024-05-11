@@ -18,15 +18,16 @@
             <img src="img/doc3.png" alt="doctor">
         </div>
 
-
+    <form action="validate.php" method="post">
     <div class="resched-container">
             <h1>Reschedule an Appointment</h1>
             <p>To proceed with rescheduling your appointments, please provide the appointment ID below.</p>
         
             <label for="appointment-id" class="appointmentID">Input Appointment ID: </label>
-                    <input type="number" required class="user-appointment-id">
+                    <input type="number" required class="user-appointment-id" id="appointment_id" name="appointment_id">
             <button id="proceed-btn">Proceed</button>
     </div>
+    </form>
 
     <script src="script.js"></script>
 </body>
