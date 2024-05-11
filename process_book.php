@@ -11,10 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gender = $_POST['gender'];
     $contact = $_POST['contact'];
     $email = $_POST['email'];
-    $service_name = $_POST['service']; // Retrieve service name from the form
-    $doctor_name = $_POST['doctor']; // Retrieve doctor name from the form
-    $date = $_POST['date'];
+    $service_id = $_POST['service'];
+    $doctor_id = $_POST['doctor'];
     $time = $_POST['time'];
+    $date = $_POST['date'];
 
     // Check if the email already exists
     $check_email_sql = "SELECT ptn_id FROM tblpatient WHERE ptn_email = ?";
@@ -29,33 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit(); // Stop execution
     }
 
-    // Retrieve service ID based on service name
-    $service_id_sql = "SELECT serv_id FROM tblservice WHERE serv_name = ?";
-    $service_stmt = $conn->prepare($service_id_sql);
-    $service_stmt->bind_param("s", $service_name);
+    // Retrieve service name
+    $service_query = "SELECT serv_name FROM tblservice WHERE serv_id = ?";
+    $service_stmt = $conn->prepare($service_query);
+    $service_stmt->bind_param("i", $service_id);
     $service_stmt->execute();
     $service_result = $service_stmt->get_result();
-
-    // Check if the query returned any rows
-    if ($service_result->num_rows > 0) {
-    // Fetch the row and retrieve the service ID
     $service_row = $service_result->fetch_assoc();
-    $service_id = $service_row['serv_id'];
-    } else {
-    // Handle the case where the service name was not found in the database
-    // For example, you can display an error message or set a default service ID
-    echo "Error: Service not found in the database.";
-    exit(); // Stop execution or handle the error appropriately
-    }
+    $service_name = $service_row['serv_name'];
 
-    // Retrieve doctor ID based on doctor name
-    $doctor_id_sql = "SELECT doc_id FROM tbldoctor WHERE doc_lname = ?";
-    $doctor_stmt = $conn->prepare($doctor_id_sql);
-    $doctor_stmt->bind_param("s", $doctor_name);
+    // Retrieve doctor name
+    $doctor_query = "SELECT doc_lname FROM tbldoctor WHERE doc_id = ?";
+    $doctor_stmt = $conn->prepare($doctor_query);
+    $doctor_stmt->bind_param("i", $doctor_id);
     $doctor_stmt->execute();
     $doctor_result = $doctor_stmt->get_result();
     $doctor_row = $doctor_result->fetch_assoc();
-    $doctor_id = $doctor_row['doc_id'];
+    $doctor_name = $doctor_row['doc_lname'];
 
     // Insert data into tblpatient table
     $patient_sql = "INSERT INTO tblpatient (ptn_fname, ptn_lname, ptn_birthdate, ptn_gender, ptn_contact, ptn_email) 
@@ -83,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $appoint_id_result = $appoint_id_stmt->get_result();
             $appoint_id_row = $appoint_id_result->fetch_assoc();
             $appointment_id = $appoint_id_row['apt_id'];
+
             // Store necessary data in session variables
             session_start();
             $_SESSION['appointment_details'] = array(
@@ -95,8 +86,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'email' => $email,
                 'service' => $service_name,
                 'doctor' => $doctor_name,
-                'date' => $date,
-                'time' => $time
+                'avail-date' => $date,
+                'avail-time' => $time
             );
 
             // Redirect to confirmation page
@@ -108,11 +99,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Close prepared statements
         $appoint_stmt->close();
-        $patient_stmt->close();
-    
-        // Close database connection
-        $conn->close();
     } else {
         echo "Error: " . $patient_stmt->error;
     }
+
+    // Close prepared statements
+    $patient_stmt->close();
+    
+    // Close database connection
+    $conn->close();
 }
