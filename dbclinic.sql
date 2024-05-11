@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2024 at 02:35 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: May 11, 2024 at 12:57 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -64,18 +64,13 @@ CREATE TABLE `tblappoint` (
 --
 
 INSERT INTO `tblappoint` (`apt_id`, `ptn_id`, `doc_id`, `serv_id`, `apt_time`, `apt_date`, `sched_status`) VALUES
-(108402, 1114, 127, 4326, '00:00:01', '2024-05-15', ''),
-(108403, 1115, 127, 4326, '08:30:00', '2024-05-15', ''),
-(108404, 1116, 126, 4325, '00:00:10', '2024-05-11', ''),
-(108405, 1117, 122, 4321, '04:00:00', '2024-05-10', ''),
-(108406, 1118, 124, 4323, '03:30:00', '2024-05-13', ''),
-(108407, 1119, 127, 4322, '08:30:00', '2024-05-15', ''),
-(108408, 1120, 125, 4324, '12:00:00', '2024-05-14', ''),
-(108409, 1122, 122, 4321, '03:00:00', '2024-05-10', ''),
-(108410, 1126, 122, 4324, '03:00:00', '2024-05-10', ''),
-(108411, 1127, 124, 4323, '08:30:00', '2024-05-15', ''),
-(108412, 1128, 127, 4326, '01:00:00', '2024-05-15', ''),
-(108413, 1129, 125, 4325, '10:00:00', '2024-05-14', '');
+(108421, 1137, 124, 4323, '08:30:00', '2024-05-12', ''),
+(108422, 1138, 123, 4323, NULL, NULL, ''),
+(108423, 1139, 126, 4325, '12:30:00', '2024-05-14', ''),
+(108424, 1140, 122, 4324, '03:00:00', '2024-05-10', ''),
+(108425, 1141, 122, 4324, '03:00:00', '2024-05-10', ''),
+(108426, 1142, 122, 4324, '03:30:00', '2024-05-14', ''),
+(108427, 1143, 122, 4324, '03:00:00', '2024-05-10', '');
 
 -- --------------------------------------------------------
 
@@ -99,13 +94,12 @@ CREATE TABLE `tbldoctor` (
 --
 
 INSERT INTO `tbldoctor` (`doc_id`, `doc_fname`, `doc_lname`, `doc_spec`, `doc_birthdate`, `doc_email`, `doc_contact`, `lgn_id`) VALUES
-(122, 'George', 'Mendoza', 'Geriatrician', NULL, 'gmendoza@gmail.com', '9729163528', 24),
-(123, 'Mateo', 'Cantiveros', 'Physician', NULL, 'mcantiveros@gmail.com', '9097251723', 25),
-(124, 'Robert', 'Aquino', 'Cardiologist', NULL, 'raquino@gmail.com', '9873621034', 26),
-(125, 'Maria Christine', 'Bondoc', 'Pediatrician', NULL, 'mcbondoc@gmail.com', '9026284521', 27),
-(126, 'Carla', 'Mendez', 'Gastroenterologist', NULL, 'cmendez@gmail.com', '9821622453', 28),
-(127, 'Luisa', 'Tanzo', 'Dentist', NULL, 'ltanzo@gmail.com', '9555728328', 29),
-(129, 'Krizelle', 'Anaya', NULL, NULL, 'micahanaya09@gmail.com', '09817229282', 32);
+(122, 'George', 'Mendoza', 'Blood Test, Chronic Disease', NULL, 'gmendoza@gmail.com', '9729163528', 24),
+(123, 'Mateo', 'Callao', 'Vaccination, Minor Illness', NULL, 'mcantiveros@gmail.com', '9097251723', 25),
+(124, 'Robert', 'Aquino', 'Chronic Disease, Blood Test', NULL, 'raquino@gmail.com', '9873621034', 26),
+(125, 'Maria', 'Bondoc', 'Minor Illness, Ultrasound', NULL, 'mcbondoc@gmail.com', '9026284521', 27),
+(126, 'Carla', 'Mendez', 'Ultrasound, Dental', NULL, 'cmendez@gmail.com', '9821622453', 28),
+(127, 'Luisa', 'Tanzo', 'Dental, Vaccination', NULL, 'ltanzo@gmail.com', '9555728328', 29);
 
 -- --------------------------------------------------------
 
@@ -158,22 +152,13 @@ CREATE TABLE `tblpatient` (
 --
 
 INSERT INTO `tblpatient` (`ptn_id`, `ptn_fname`, `ptn_lname`, `ptn_birthdate`, `ptn_gender`, `ptn_contact`, `ptn_email`) VALUES
-(1114, 'Jisoo', 'Kim', '1997-03-29', 'female', 9736183622, 'jisookim12@gmail.com'),
-(1115, 'Chelsea', 'Jang', '2009-05-11', 'female', 9133862271, 'che@gmail.com'),
-(1116, 'Chelsea', 'Jang', '2009-05-11', 'female', 9133862271, 'cgyf@gmail.com'),
-(1117, 'Jisoo', 'Victoria', '1989-02-18', 'female', 9133863927, 'vic@gmail.com'),
-(1118, 'Jisoo', 'Victoria', '1989-02-18', 'female', 9133863927, 'vc@gmail.com'),
-(1119, 'Jisoo', 'Victoria', '1989-02-18', 'female', 9133863927, 'iic@gmail.com'),
-(1120, 'Jisoo', 'Victoria', '1989-02-18', 'female', 9133863927, 'iiygc@gmail.com'),
-(1121, 'Arjay', 'Yulip', '2024-02-06', 'male', 9133862028, 'jayjays@gmail.com'),
-(1122, 'Arjay', 'Yulip', '2024-02-06', 'male', 9133862028, 'jss@gmail.com'),
-(1123, 'Arjay', 'Mesiea', '2024-01-19', 'male', 9133863927, 'j32ay@gmail.com'),
-(1124, 'Arjay', 'Mesiea', '2024-01-19', 'male', 9133863927, 'j3882ay@gmail.com'),
-(1125, 'Arjay', 'Mesiea', '2024-01-19', 'male', 9133863927, 'jdiwydjwb@gmail.com'),
-(1126, 'Arjay', 'Yulip', '2019-09-11', 'male', 9812517483, 'jay-m@gmail.com'),
-(1127, 'Arjay', 'Jang', '2010-04-03', 'male', 9729461190, 'iiqsnsqs9@gmail.com'),
-(1128, 'Wonyoung', 'Kim', '1991-05-29', 'female', 9736183911, 'qouw@gmail.com'),
-(1129, 'Jang', 'Victoria', '1998-09-20', 'female', 9133863111, 'jangvic@gmail.com');
+(1137, 'Jay', 'Yulip', '2000-01-01', 'Male', 9133862271, 'aj@gmail.com'),
+(1138, 'Jay', 'Yulip', '2000-01-01', 'Male', 9133862271, '1121342j@gmail.com'),
+(1139, 'Jisoo', 'Kim', '2001-09-23', 'Female', 9729461192, 'ltewerf3vo@gmail.com'),
+(1140, 'aaaaa', 'jjjj', '2009-01-31', 'Male', 9729461192, 'ja33fdccy@gmail.com'),
+(1141, 'Wonyoung', 'Victoria', '2012-12-12', 'Female', 9736183622, 'vichnnfyele@gmail.com'),
+(1142, 'Jang', 'Kim', '2007-09-22', 'Female', 9729461192, 'jamkhukrty@gmail.com'),
+(1143, 'asca', 'fefa', '1998-03-19', 'Female', 9133863927, '9721e6728ey@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -195,7 +180,17 @@ CREATE TABLE `tblschedule` (
 --
 
 INSERT INTO `tblschedule` (`sched_id`, `sched_date`, `start_time`, `end_time`, `sched_limit`, `doc_id`) VALUES
-(211, '2024-05-09', '10:00:00', '17:00:00', 0, NULL);
+(212, '2024-05-10', '07:00:00', '16:00:00', 18, 122),
+(213, '2024-05-10', '09:00:00', '14:00:00', 10, 124),
+(214, '2024-05-11', '08:00:00', '12:00:00', 8, 123),
+(215, '2024-05-11', '11:00:00', '18:00:00', 14, 125),
+(216, '2024-05-12', '07:30:00', '13:00:00', 11, 124),
+(217, '2024-05-12', '10:00:00', '16:30:00', 13, 126),
+(218, '2024-05-13', '07:00:00', '16:00:00', 18, 125),
+(219, '2024-05-13', '09:30:00', '12:00:00', 15, 127),
+(220, '2024-05-14', '08:00:00', '17:00:00', 18, 126),
+(221, '2024-05-14', '07:00:00', '16:00:00', 18, 122),
+(222, '2024-05-15', '08:30:00', '17:30:00', 18, 127);
 
 -- --------------------------------------------------------
 
@@ -288,7 +283,7 @@ ALTER TABLE `tbladmin`
 -- AUTO_INCREMENT for table `tblappoint`
 --
 ALTER TABLE `tblappoint`
-  MODIFY `apt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108414;
+  MODIFY `apt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108428;
 
 --
 -- AUTO_INCREMENT for table `tbldoctor`
@@ -306,13 +301,13 @@ ALTER TABLE `tbllogin`
 -- AUTO_INCREMENT for table `tblpatient`
 --
 ALTER TABLE `tblpatient`
-  MODIFY `ptn_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1130;
+  MODIFY `ptn_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1144;
 
 --
 -- AUTO_INCREMENT for table `tblschedule`
 --
 ALTER TABLE `tblschedule`
-  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 
 --
 -- AUTO_INCREMENT for table `tblservice`
