@@ -55,15 +55,17 @@ session_start();
                 <td><strong>Doctor:</strong><?php echo " Dr. ". $_SESSION['appointment_details']['doctor']; ?></td>
             </tr>
             <tr>
-                <td><strong>Date:</strong> <?php echo $_SESSION['appointment_details']['date']; ?></td>
+                <td><strong>Date:</strong> <?php echo $_SESSION['appointment_details']['avail-date']; ?></td>
             </tr>
             <tr>
-                <td><strong>Time:</strong> <?php echo $_SESSION['appointment_details']['time']; ?></td>
+                <td><strong>Time:</strong> <?php echo $_SESSION['appointment_details']['avail-time']; ?></td>
             </tr>
             <tr>
                 <td><strong>Duration: </strong><?php echo "30 minutes"; ?></td>
             </tr>
         </table>
+        <a href="home.html" id="proceed-btn">Back</a>
     </div>
+    
 </body>
 </html>
