@@ -148,11 +148,12 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
                 </span>
             </li>
         <?php endif; ?>
-        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
+        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Dashboard</span></a></li>
         <li><a href="doctor.php"><i class="fa fa-stethoscope"></i> <span>Doctor</span></a></li>
         <li><a href="patients.php"><i class="fa fa-user"></i> <span>Patient</span></a></li>
         <li><a href="appointment.php"><i class="fa fa-clipboard"></i> <span>Appointment</span></a></li>
         <li><a href="account_details.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
+        <li><a href="logout.php"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
     </ul>
   </div>
   <div class="content">
