@@ -57,6 +57,53 @@ $appointmentSql = "SELECT apt.apt_id,
                    INNER JOIN tblservice serv ON apt.serv_id = serv.serv_id";
 
 $appointmentResult = $conn->query($appointmentSql);
+
+// Handle record deletion
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recordId'])) {
+  // Get the recordId from the POST data
+  $recordId = $_POST['recordId'];
+
+  // Check if status is being updated
+  if (isset($_POST['status'])) {
+    $status = $_POST['status'];
+    // Prepare and execute the SQL statement to update the appointment record
+    $updateAppointmentSql = "UPDATE tblappoint SET sched_status = ? WHERE apt_id = ?";
+    $stmtAppointment = $conn->prepare($updateAppointmentSql);
+    $stmtAppointment->bind_param("si", $status, $recordId);
+
+    // Execute appointment update query
+    if ($stmtAppointment->execute()) {
+        // If update is successful, echo 'success'
+        
+    } else {
+        // If update fails, echo 'error'
+       
+    }
+
+    // Close statement
+    $stmtAppointment->close();
+  } else {
+    // Prepare and execute the SQL statement to delete the appointment record
+    $deleteAppointmentSql = "DELETE FROM tblappoint WHERE apt_id = ?";
+    $stmtAppointment = $conn->prepare($deleteAppointmentSql);
+    $stmtAppointment->bind_param("i", $recordId);
+
+    // Execute appointment deletion query
+    if ($stmtAppointment->execute()) {
+        // If deletion is successful, echo 'success'
+        
+    } else {
+        // If deletion fails, echo 'error'
+        
+    }
+
+    // Close statement
+    $stmtAppointment->close();
+  }
+} else {
+  // If the request method is not POST or recordId is not set, echo 'error'
+  echo 'error';
+}
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +114,11 @@ $appointmentResult = $conn->query($appointmentSql);
   <title>Admin Page</title>
   <link rel="stylesheet" href="admin_style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .status-input {
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <div class="sidebar">
@@ -87,11 +139,12 @@ $appointmentResult = $conn->query($appointmentSql);
                 </span>
             </li>
         <?php endif; ?>
-        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
+        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Dashboard</span></a></li>
         <li><a href="doctor.php"><i class="fa fa-stethoscope"></i> <span>Doctor</span></a></li>
         <li><a href="patients.php"><i class="fa fa-user"></i> <span>Patient</span></a></li>
         <li><a href="appointment.php"><i class="fa fa-clipboard"></i> <span>Appointment</span></a></li>
         <li><a href="account_details.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
+        <li><a href="logout.php"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
     </ul>
   </div>
   <div class="content">
@@ -106,13 +159,15 @@ $appointmentResult = $conn->query($appointmentSql);
         </div>
       </div>
       <div class="toolbar__search">
-        <input type="text" placeholder="Search...">
-        <button class="search-button"><i class="fa fa-search"></i></button>
+        <div class="apt-search-bar">
+          <input type="text" placeholder="Search...">
+          <button class="search-button"><i class="fa fa-search"></i></button>
+        </div>
       </div>
       <div class="toolbar__filter">
         <button>Filter</button>
       </div>
-  </div>
+    </div>
     <table class="appointment-table">
       <thead>
         <tr>
@@ -129,28 +184,51 @@ $appointmentResult = $conn->query($appointmentSql);
       </thead>
       <tbody>
         <?php
-          // Populate table rows with appointment records
-          if ($appointmentResult->num_rows > 0) {
-              while ($row = $appointmentResult->fetch_assoc()) {
-                  echo "<tr>";
-                  echo "<td>" . $row['apt_id'] . "</td>";
-                  echo "<td>" . $row['patient'] . "</td>";
-                  echo "<td>" . $row['service'] . "</td>";
-                  echo "<td>" . $row['service_provider'] . "</td>";
-                  echo "<td>" . $row['apt_date'] . "</td>";
-                  echo "<td>" . $row['apt_time'] . "</td>";
-                  echo "<td>" . $row['duration'] . "</td>";
-                  echo "<td>" . $row['sched_status'] . "</td>";
-                  echo "<td><i class='fa fa-trash delete-icon action-icon'></i> <i class='fa fa-pencil edit-icon action-icon'></i></td>";
-                  echo "</tr>";
-              }
-          } else {
-              echo "<tr><td colspan='9'>No records found</td></tr>";
-          }
-        ?>
+            // Populate table rows with appointment records
+            if ($appointmentResult->num_rows > 0) {
+                while ($row = $appointmentResult->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row['apt_id'] . "</td>";
+                    echo "<td>" . $row['patient'] . "</td>";
+                    echo "<td>" . $row['service'] . "</td>";
+                    echo "<td>" . $row['service_provider'] . "</td>";
+                    echo "<td>" . $row['apt_date'] . "</td>";
+                    echo "<td>" . $row['apt_time'] . "</td>";
+                    echo "<td>" . $row['duration'] . "</td>";
+                    echo "<td>" . $row['sched_status'] . "</td>";
+                    echo "<td>
+                          <form id=\"delete-form-" . $row['apt_id'] . "\" class=\"delete-form\" method=\"post\">
+                              <input type=\"hidden\" name=\"recordId\" value=\"" . $row['apt_id'] . "\">
+                              <button type=\"submit\" class=\"delete-icon\"><i class=\"fa fa-trash\"></i></button>
+                          </form>
+                          <form id=\"edit-form-" . $row['apt_id'] . "\" class=\"action-form\" method=\"post\">
+                              <input type=\"hidden\" name=\"recordId\" value=\"" . $row['apt_id'] . "\">
+                              <input type=\"text\" name=\"status\" placeholder=\"Enter status\" value=\"" . $row['sched_status'] . "\" class=\"status-input\">
+                              <button type=\"button\" class=\"edit-icon\" onclick=\"toggleStatusInput(this)\"><i class=\"fa fa-pencil\"></i></button>
+                              <button type=\"submit\" class=\"submit-icon\" style=\"display: none;\"><i class=\"fa fa-check\"></i></button>
+                          </form>
+                      </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='9'>No records found</td></tr>";
+            }
+          ?>
       </tbody>
     </table>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
+  <script>
+    function toggleStatusInput(button) {
+      var form = button.parentElement;
+      var input = form.querySelector('.status-input');
+      var submitButton = form.querySelector('.submit-icon');
+      
+      input.style.display = 'block';
+      button.style.display = 'none';
+      submitButton.style.display = 'block';
+    }
+  </script>
 </body>
 </html>
