@@ -48,7 +48,39 @@ $doctorSql = "SELECT doc_id, doc_fname, doc_lname, doc_contact, doc_email,
                      doc_spec 
               FROM tbldoctor";
 $doctorResult = $conn->query($doctorSql);
+
+// Handle record deletion
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['docId'])) {
+  // Get the docId from the POST data
+  $docId = $_POST['docId'];
+
+  // Prepare and execute the SQL statement to delete the record from tbldoctor
+  $deleteDoctorSql = "DELETE FROM tbldoctor WHERE doc_id = ?";
+  $stmtDoctor = $conn->prepare($deleteDoctorSql);
+  $stmtDoctor->bind_param("i", $docId);
+
+  // Execute doctor deletion query
+  if ($stmtDoctor->execute()) {
+      // Prepare and execute the SQL statement to delete the record from tbllogin
+      $deleteLoginSql = "DELETE tbllogin FROM tbllogin INNER JOIN tbldoctor ON tbllogin.lgn_id = tbldoctor.lgn_id WHERE tbldoctor.doc_id = ?";
+      $stmtLogin = $conn->prepare($deleteLoginSql);
+      $stmtLogin->bind_param("i", $docId);
+
+      if ($stmtLogin->execute()) {
+          // If deletion is successful for both tables, redirect back to the admin page
+          header("Location: doctor.php");
+          exit();
+      } else {
+          // If deletion from tbllogin fails, handle the error
+          echo 'Error deleting record from tbllogin!';
+      }
+  } else {
+      // If deletion from tbldoctor fails, handle the error
+      echo 'Error deleting record from tbldoctor!';
+  }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,11 +110,12 @@ $doctorResult = $conn->query($doctorSql);
                 </span>
             </li>
         <?php endif; ?>
-        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
+        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Dashboard</span></a></li>
         <li><a href="doctor.php"><i class="fa fa-stethoscope"></i> <span>Doctor</span></a></li>
         <li><a href="patients.php"><i class="fa fa-user"></i> <span>Patient</span></a></li>
         <li><a href="appointment.php"><i class="fa fa-clipboard"></i> <span>Appointment</span></a></li>
         <li><a href="account_details.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
+        <li><a href="logout.php"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
     </ul>
   </div>
   <div class="content">
@@ -115,7 +148,7 @@ $doctorResult = $conn->query($doctorSql);
             // Populate table rows with doctor records
             if ($doctorResult->num_rows > 0) {
                 while ($row = $doctorResult->fetch_assoc()) {
-                    echo "<tr>";
+                    echo "<tr data-id='" . $row['doc_id'] . "'>";
                     echo "<td>" . $row['doc_id'] . "</td>";
                     echo "<td>" . $row['doc_lname'] . "</td>";
                     echo "<td>" . $row['doc_fname'] . "</td>";
@@ -123,7 +156,14 @@ $doctorResult = $conn->query($doctorSql);
                     echo "<td>" . $row['doc_email'] . "</td>";
                     echo "<td>" . $row['age'] . "</td>";
                     echo "<td>" . $row['doc_spec'] . "</td>";
-                    echo "<td><i class='fa fa-trash delete-icon action-icon'></i> <i class='fa fa-pencil edit-icon action-icon'></i></td>";
+                    echo "<td>
+                    <form method='post'>
+                        <input type='hidden' name='docId' value='" . $row['doc_id'] . "'>
+                        <div class='action-icons'>
+                            <button type='submit' class='delete-button'><i class='fa fa-trash delete-icon action-icon'></i></button>
+                        </div>
+                    </form>
+                   </td>";
                     echo "</tr>";
                 }
             } else {
@@ -135,5 +175,6 @@ $doctorResult = $conn->query($doctorSql);
       
   </div>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 </html>
