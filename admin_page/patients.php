@@ -50,6 +50,43 @@ $patientSql = "SELECT p.ptn_id AS ID, p.ptn_lname AS 'Last Name', p.ptn_fname AS
               FROM tblpatient p
               LEFT JOIN tblappoint a ON p.ptn_id = a.ptn_id";
 $patientResult = $conn->query($patientSql);
+
+// Handle record deletion
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ptnId'])) {
+  // Get the ptnId from the POST data
+  $ptnId = $_POST['ptnId'];
+
+  // Prepare and execute the SQL statement to delete appointments for the patient
+  $deleteAppointmentsSql = "DELETE FROM tblappoint WHERE ptn_id = ?";
+  $stmtAppointments = $conn->prepare($deleteAppointmentsSql);
+  $stmtAppointments->bind_param("i", $ptnId);
+
+  // Execute appointment deletion query
+  if ($stmtAppointments->execute()) {
+      // Prepare and execute the SQL statement to delete the patient record
+      $deletePatientSql = "DELETE FROM tblpatient WHERE ptn_id = ?";
+      $stmtPatient = $conn->prepare($deletePatientSql);
+      $stmtPatient->bind_param("i", $ptnId);
+
+      // Execute patient deletion query
+      if ($stmtPatient->execute()) {
+          // If both deletions are successful, echo 'success'
+         
+      } else {
+          // If patient deletion fails, echo 'error'
+          
+      }
+  } else {
+      // If appointment deletion fails, echo 'error'
+     
+  }
+
+  // Close statements
+  $stmtAppointments->close();
+  $stmtPatient->close();
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -80,11 +117,12 @@ $patientResult = $conn->query($patientSql);
                 </span>
             </li>
         <?php endif; ?>
-        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
+        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Dashboard</span></a></li>
         <li><a href="doctor.php"><i class="fa fa-stethoscope"></i> <span>Doctor</span></a></li>
         <li><a href="patients.php"><i class="fa fa-user"></i> <span>Patient</span></a></li>
         <li><a href="appointment.php"><i class="fa fa-clipboard"></i> <span>Appointment</span></a></li>
         <li><a href="account_details.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
+        <li><a href="logout.php"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
     </ul>
   </div>
   <div class="content">
@@ -118,7 +156,7 @@ $patientResult = $conn->query($patientSql);
             // Populate table rows with patient records
             if ($patientResult->num_rows > 0) {
                 while ($row = $patientResult->fetch_assoc()) {
-                    echo "<tr>";
+                    echo "<tr data-id='" . $row['ID'] . "'>";
                     echo "<td>" . $row['ID'] . "</td>";
                     echo "<td>" . $row['Last Name'] . "</td>";
                     echo "<td>" . $row['First Name'] . "</td>";
@@ -127,7 +165,14 @@ $patientResult = $conn->query($patientSql);
                     echo "<td>" . $row['Age'] . "</td>";
                     echo "<td>" . $row['Gender'] . "</td>";
                     echo "<td>" . $row['Appointment ID'] . "</td>";
-                    echo "<td><i class='fa fa-trash delete-icon action-icon'></i> <i class='fa fa-pencil edit-icon action-icon'></i></td>";
+                    echo "<td>
+                    <form method='post'>
+                        <input type='hidden' name='ptnId' value='" . $row['ID'] . "'>
+                        <div class='action-icons'>
+                            <button type='submit' class='delete-icon'><i class='fa fa-trash'></i></button>
+                        </div>
+                    </form>
+                   </td>";
                     echo "</tr>";
                 }
             } else {
