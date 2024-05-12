@@ -71,7 +71,7 @@ if(isset($_SESSION['username'])) {
     <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
     <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
     <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-    <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
+    <span title="Logout"><a href="logout.php" onclick="return confirmSignOut()"><i id="logout" class="fa fa-sign-out"></i></a></span>
 </div>
 
 <h2 id="doclandh2" class="doctor_name">Welcome Doctor <?php echo $firstName . ' ' . $lastName; ?></h2>
@@ -134,6 +134,10 @@ function openNav() {
 
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
+}
+
+function confirmSignOut() {
+    return confirm("You want to Sign out?");
 }
 </script>
 </body>

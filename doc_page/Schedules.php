@@ -89,7 +89,7 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
       <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
       <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
       <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-      <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
+      <span title="Logout"><a href="logout.php" onclick="return confirmSignOut()"><i id="logout" class="fa fa-sign-out"></i></a></span>
     </div>
     
   <div id="schedContainer">
@@ -172,8 +172,11 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
 
     function confirmSubmit() {
     return confirm("Are you sure you want to submit this schedule?");
-}
+    }
 
+    function confirmSignOut() {
+        return confirm("You want to Sign out?");
+    }
     </script>
 
 </body>

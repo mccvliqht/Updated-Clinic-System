@@ -200,7 +200,7 @@ if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPasswo
     <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
     <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
     <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-    <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
+    <span title="Logout"><a href="logout.php" onclick="return confirmSignOut()"><i id="logout" class="fa fa-sign-out"></i></a></span>
 </div>
 
 <div class="content">
@@ -308,6 +308,10 @@ function closeNav() {
 
   function confirmEdit() {
     return confirm("Are you sure you want to save changes?");
+  }
+
+  function confirmSignOut() {
+    return confirm("You want to Sign out?");
   }
 
 
