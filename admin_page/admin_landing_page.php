@@ -74,7 +74,7 @@ $conn->close(); // Close connection
 <body>
   <div class="sidebar">
     <div class="navbar">
-    <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
+      <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
       <button class="nav-icon" onclick="toggleSidebar()">
         <span class="line"></span>
         <span class="line"></span>
@@ -90,38 +90,32 @@ $conn->close(); // Close connection
                 </span>
             </li>
         <?php endif; ?>
-        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
+        <li><a href="admin_landing_page.php"><i class="fa fa-calendar"></i> <span>Dashboard</span></a></li>
         <li><a href="doctor.php"><i class="fa fa-stethoscope"></i> <span>Doctor</span></a></li>
         <li><a href="patients.php"><i class="fa fa-user"></i> <span>Patient</span></a></li>
         <li><a href="appointment.php"><i class="fa fa-clipboard"></i> <span>Appointment</span></a></li>
         <li><a href="account_details.php"><i class="fa fa-user-circle-o"></i> <span>Account Details</span></a></li>
+        <li><a href="logout.php"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
     </ul>
   </div>
-    <div class="content">
-      <div class="dashboard">
-        <h2>Dashboard</h2>
-        <div class="dashboard-box">
-          <h3>Total Doctors</h3>
-          <p><?php echo $totalDoctors; ?></p>
+  <div class="content">
+    <div class="dashboard-container">
+        <div class="dashboard">
+          <h2>Welcome Back, <?php echo $firstName . ' ' . $lastName; ?> !</h2>
+            <div class="dashboard-box">
+                <h3>Total Doctors</h3>
+                <p><?php echo $totalDoctors; ?></p>
+            </div>
+            <div class="dashboard-box">
+                <h3>Total Patients</h3>
+                <p><?php echo $totalPatients; ?></p>
+            </div>
+            <div class="dashboard-box">
+                <h3>Total Appointments</h3>
+                <p><?php echo $totalAppointments; ?></p>
+            </div>
         </div>
-        <div class="dashboard-box">
-          <h3>Total Patients</h3>
-          <p><?php echo $totalPatients; ?></p>
-        </div>
-        <div class="dashboard-box">
-          <h3>Total Appointments</h3>
-          <p><?php echo $totalAppointments; ?></p>
-        </div>
-      </div>
-      <div class="calendar">
-        <div class="calendar-header">
-          <h2>Date: <?php echo date('Y-m-d'); ?></h2>
-        </div>
-        <div class="calendar-grid">
-          <!-- Calendar grid content here -->
-        </div>
-      </div>
-
+    </div>
   </div>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
 </body>
