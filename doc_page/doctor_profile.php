@@ -7,8 +7,6 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
     header("location: ../login.php");
     exit;
 }
-?>
-<?php
 
 // Include your database configuration file
 include '../config.php'; 
@@ -135,6 +133,47 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
         echo "Error: " . $e->getMessage();
     }
 }
+
+// Password change logic
+if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPassword'])) {
+    $currentPassword = $_POST['currentPassword'];
+    $newPassword = $_POST['newPassword'];
+    $confirmPassword = $_POST['confirmPassword'];
+
+    // Check if the current password matches the one stored in the database
+    $sqlCheckPassword = "SELECT lgn_password FROM tblLogin WHERE lgn_username = ?";
+    $stmtCheckPassword = $conn->prepare($sqlCheckPassword);
+    $stmtCheckPassword->bind_param("s", $_SESSION['username']);
+    $stmtCheckPassword->execute();
+    $stmtCheckPassword->bind_result($hashedPassword);
+    $stmtCheckPassword->fetch();
+    $stmtCheckPassword->close();
+
+    if(password_verify($currentPassword, $hashedPassword)) {
+        // Current password is correct, proceed with password update
+        if($newPassword === $confirmPassword) {
+            // Hash the new password
+            $newHashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // Update the password in the database
+            $sqlUpdatePassword = "UPDATE tblLogin SET lgn_password = ? WHERE lgn_username = ?";
+            $stmtUpdatePassword = $conn->prepare($sqlUpdatePassword);
+            $stmtUpdatePassword->bind_param("ss", $newHashedPassword, $_SESSION['username']);
+            $stmtUpdatePassword->execute();
+            $stmtUpdatePassword->close();
+
+            // Redirect to prevent form resubmission
+            header("Location: {$_SERVER['REQUEST_URI']}");
+            exit();
+        } else {
+            // Passwords do not match
+            echo "New passwords do not match.";
+        }
+    } else {
+        // Incorrect current password
+        echo "Incorrect current password.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -213,7 +252,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
           </div>
           <div class="button-group">
             <button type="button" id="editBtn">Edit Details</button>
-            <button type="submit" id="saveBtn" style="display: none;">Save Changes</button>
+            <button type="submit" id="saveBtn" style="display: none; " onclick="return confirmEdit()">Save Changes</button>
           </div>
         </form>
       </div>
@@ -234,7 +273,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
             <input type="password" id="confirmPassword" name="confirmPassword" class="edit-input" required>
           </div>
           <div class="button-group">
-            <button type="submit" id="changePasswordBtn">Save Changes</button>
+            <button type="submit" id="changePasswordBtn" onclick="return confirmEdit()">Save Changes</button>
           </div>
         </form>
       </div>
@@ -266,6 +305,11 @@ function closeNav() {
   if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
   }
+
+  function confirmEdit() {
+    return confirm("Are you sure you want to save changes?");
+  }
+
 
 
 </script>

@@ -74,9 +74,9 @@ if(isset($_SESSION['username'])) {
     <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
 </div>
 
-<h2 id="doclandh2" class="doctor_name">Welcome <?php echo $firstName . ' ' . $lastName; ?></h2>
-
+<h2 id="doclandh2" class="doctor_name">Welcome Doctor <?php echo $firstName . ' ' . $lastName; ?></h2>
 <div id="todayTable"> 
+    <h2>Today's Patients</h2>
     <table>
         <tr>
             <th>Appointment ID</th>

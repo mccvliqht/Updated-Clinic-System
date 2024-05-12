@@ -7,9 +7,6 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
     header("location: ../login.php");
     exit;
 }
-?>
-<?php
-
 
 include '../config.php'; 
 
@@ -47,9 +44,25 @@ if(isset($_SESSION['username'])) {
         $lastName = $doc_lname;
     }
     $stmt->close(); // Close statement
+
+    // Modify the SQL query to fetch data relevant to the current user
+    $sql = "SELECT apt_id, ptn_fname, ptn_lname, serv_name, ptn_contact, apt_date, apt_time, serv_duration, sched_status, tblPatient.ptn_id
+            FROM tblAppoint
+            INNER JOIN tblPatient ON tblAppoint.ptn_id = tblPatient.ptn_id
+            INNER JOIN tblService ON tblAppoint.serv_id = tblService.serv_id
+            WHERE tblAppoint.doc_id = ?";
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
+
+    // Bind parameters and execute statement
+    $stmt->bind_param("i", $doc_id);
+    $stmt->execute();
+
+    // Store result
+    $result = $stmt->get_result();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,45 +76,36 @@ if(isset($_SESSION['username'])) {
     <span id="BarsNav" style="font-size:30px;cursor:pointer" onclick="openNav()"><i class="fa fa-bars"></i></span>
     
 </head>
-    <body>
-    <div id="mySidenav" class="sidenav">
-      <img src="Logo.png" id="mylogo" alt="Soriano Clinic logo">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <?php if($firstName && $lastName): ?>
-        <a href="doctor_profile.php" class="doctor_name"><i class="fa fa-user-circle"></i><?php echo $firstName . ' ' . $lastName; ?></a>
-      <?php endif; ?>    
-      <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
-      <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
-      <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
-      <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
-    </div>
+<body>
+<div id="mySidenav" class="sidenav">
+    <img src="Logo.png" id="mylogo" alt="Soriano Clinic logo">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <?php if($firstName && $lastName): ?>
+    <a href="doctor_profile.php" class="doctor_name"><i class="fa fa-user-circle"></i><?php echo $firstName . ' ' . $lastName; ?></a>
+    <?php endif; ?>    
+    <a href="doctor_landing_page.php"><i class="fa fa-home"></i>Home</a>
+    <a href="Schedules.php"><i class="fa fa-calendar"></i>Schedules</a>
+    <a href="Patient.php"><i class="fa fa-users"></i>Patients</a>
+    <span title="Logout"><a href="logout.php"><i id="logout" class="fa fa-sign-out"></i></a></span>
+</div>
 
-    <div id="patientTable">
-      <h2>PATIENT LIST</h2>
-    <table>
-          <tr>
-              <th>ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Service</th>
-              <th>Contacts</th>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>Duration</th>
-              <th>Status</th>
-              <th>Action</th>
-
-          </tr>
-          <?php include 'list_patient.php'; ?>
-          <?php
-            $result = $conn->query($sql);
-
-            // Check if query was successful
-            if ($result === false) {
-                die("Error executing the query: " . $conn->error);
-            }
-
-
+<div id="patientTable">
+    <h2>PATIENT LIST</h2>
+    <form action="" method="post">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Service</th>
+                <th>Contacts</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>";
@@ -114,30 +118,54 @@ if(isset($_SESSION['username'])) {
                     echo "<td>".$row["apt_time"]."</td>";
                     echo "<td>".$row["serv_duration"]."</td>";
                     echo "<td>".$row["sched_status"]."</td>";
-                  echo "</tr>";
-              }
-          } else {
-              echo "<tr><td colspan='10'>No records found</td></tr>";
-          }
+                    echo "<td>";
+                    echo "<form id='deleteForm' action='' method='post'>";
+                    echo "<input type='hidden' name='apt_id' value='".$row["apt_id"]."'>";
+                    echo "<input type='submit' name='delete' value='Delete' onclick='return confirmDelete()'>";
+                    echo "</form>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='10'>No records found</td></tr>";
+            }
+            ?>
+        </table>
+    </form>
+</div>
+      
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
 
-          $result->free();
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
 
-          // Close connection
-          $conn->close();
-
-          ?>
-      </table>
-    </div>
-        
-    <script>
-    function openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-    }
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this record?");
+}
+</script>
     
-    function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    }
-    </script>
-       
-    </body>
+</body>
 </html>
+
+<?php
+if(isset($_POST['delete'])) {
+    $apt_id = $_POST['apt_id'];
+    $delete_query = "DELETE tblAppoint, tblPatient FROM tblAppoint
+                     INNER JOIN tblPatient ON tblAppoint.ptn_id = tblPatient.ptn_id
+                     WHERE tblAppoint.apt_id = ?";
+    $delete_stmt = $conn->prepare($delete_query);
+    $delete_stmt->bind_param("i", $apt_id);
+    if($delete_stmt->execute()) {
+        echo "<script>alert('Record deleted successfully');</script>";
+        echo "<script>window.location.href = 'Patient.php';</script>";
+    } else {
+        echo "<script>alert('Error deleting record');</script>";
+    }
+    $delete_stmt->close();
+}
+$conn->close();
+?>

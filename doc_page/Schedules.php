@@ -110,7 +110,7 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
                 <label for="">End Time</label><br>
                 <input type="time" name="end_time"><br><br>
                 <input type="hidden" name="doc_id" value="<?php echo $doc_id; ?>">
-                <input type="submit" value="Submit"><br>
+                <input type="submit" value="Submit" onclick="return confirmSubmit()"><br>
             </div>
         </form>
     </div>
@@ -142,7 +142,7 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
                     echo "<td>";
                     echo "<form action='delete_schedule.php' method='post'>";
                     echo "<input type='hidden' name='sched_id' value='".$row["sched_id"]."'>";
-                    echo "<input type='submit' value='Delete'>";
+                    echo "<input type='submit' value='Delete' onclick='return confirmDelete()'>";
                     echo "</form>";
                     echo "</td>";
                     echo "</tr>";
@@ -165,6 +165,15 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
     function closeNav() {
       document.getElementById("mySidenav").style.width = "0";
     }
+
+    function confirmDelete() {
+    return confirm("Are you sure you want to delete this record?");
+    }
+
+    function confirmSubmit() {
+    return confirm("Are you sure you want to submit this schedule?");
+}
+
     </script>
 
 </body>
