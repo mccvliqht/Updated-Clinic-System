@@ -98,7 +98,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
         }
 
         if ($stmtAdmin->affected_rows <= 0) {
-            throw new Exception("No rows affected");
+            throw new Exception("");
         }
 
         $stmtAdmin->close();
@@ -118,7 +118,53 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
         echo "Error: " . $e->getMessage();
     }
 }
+
+// Password change functionality
+if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPassword'])) {
+    $currentPassword = $_POST['currentPassword'];
+    $newPassword = $_POST['newPassword'];
+    $confirmPassword = $_POST['confirmPassword'];
+    $username = $_SESSION['username'];
+
+    // Prepare SQL statement to fetch current password
+    $sql = "SELECT lgn_password FROM tblLogin WHERE lgn_username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($hashedPassword);
+        $stmt->fetch();
+
+        // Verify if the entered current password matches the stored password
+        if (password_verify($currentPassword, $hashedPassword)) {
+            // Check if new password matches the confirm password
+            if ($newPassword === $confirmPassword) {
+                // Update the password in the database
+                $hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $updateSql = "UPDATE tblLogin SET lgn_password = ? WHERE lgn_username = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ss", $hashedNewPassword, $username);
+                if ($updateStmt->execute()) {
+                    echo "Password updated successfully!";
+                } else {
+                    echo "Failed to update password.";
+                }
+            } else {
+                echo "New password and confirm password do not match.";
+            }
+        } else {
+            echo "Current password is incorrect.";
+        }
+    } else {
+        echo "User not found.";
+    }
+
+    $stmt->close();
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -171,7 +217,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
       </div>
     </div>
     <div class="edit-account-details">
-      <div class="account-section">
+    <div class="account-section">
         <h2>Account Details</h2>
         <hr>
         <form id="editAccountForm" action="" method="post">
@@ -196,7 +242,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
             <input type="text" id="contact" name="contact" value="<?php echo htmlspecialchars($contact); ?>" class="edit-input" readonly>
           </div>
           <div class="button-group">
-            <button type="button" id="editBtn">Edit Details</button>
+            <button type="button" id="editButton">Edit Details</button>
             <button type="submit" id="saveBtn" style="display: none;">Save Changes</button>
           </div>
         </form>
@@ -224,7 +270,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
       </div>
     </div>
 
-
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="admin_script.js"></script>
 </body>
 </html>
