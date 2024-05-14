@@ -89,4 +89,84 @@ $(document).ready(function(){
   });
 });
 
+// Function to toggle edit mode
+function toggleEditMode() {
+  const editBtn = document.getElementById('editButton');
+  const saveBtn = document.getElementById('saveBtn');
+  const inputs = document.querySelectorAll('.edit-input');
+
+  if (editBtn.style.display !== 'none') {
+    // Enable input fields
+    inputs.forEach(input => {
+      input.removeAttribute('readonly');
+    });
+    // Hide the edit button and show the save button
+    editBtn.style.display = 'none';
+    saveBtn.style.display = 'inline-block';
+  } else {
+    // Disable input fields
+    inputs.forEach(input => {
+      input.setAttribute('readonly', 'readonly');
+    });
+    // Hide the save button and show the edit button
+    editBtn.style.display = 'inline-block';
+    saveBtn.style.display = 'none';
+  }
+}
+
+// Event listener for the edit button
+document.getElementById('editButton').addEventListener('click', function(event) {
+  // Call the toggleEditMode function
+  toggleEditMode();
+});
+
+// Ensure the form is submitted correctly when saving changes
+document.getElementById('editAccountForm').addEventListener('submit', function(event) {
+  // Additional form validation can be added here if necessary
+  // Toggle off edit mode upon form submission to reflect changes immediately
+  toggleEditMode();
+});
+
+// Event listener for the form submission
+document.getElementById('editAccountForm').addEventListener('submit', function(event) {
+  // Prevent the default form submission behavior
+  event.preventDefault();
+
+});
+
+
+$(document).ready(function() {
+  $('#changePasswordForm').submit(function(event) {
+      // Prevent default form submission
+      event.preventDefault();
+
+      // Get form data
+      var formData = $(this).serialize();
+
+      // Reference to the form
+      var form = $(this);
+
+      // Send AJAX request to handle password change
+      $.ajax({
+          type: 'POST',
+          url: 'account_details.php', // Update the URL to the PHP file handling password change
+          data: formData,
+          success: function(response) {
+              // Display success or error message
+              if (response.includes("Password updated successfully!")) {
+                  form.trigger("reset");
+                  alert("Your password has been successfully updated.");
+              } else if (response.includes("Current password is incorrect.")) {
+                  alert("The current password you entered is incorrect. Please try again.");
+              } else if (response.includes("New password and confirm password do not match.")) {
+                  alert("The new password and confirm password do not match. Please make sure they are the same.");
+              } else {
+                  alert("An error occurred. Please try again later.");
+              }
+          }
+      });
+  });
+});
+
+
 
