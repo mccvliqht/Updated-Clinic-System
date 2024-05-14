@@ -412,3 +412,27 @@ hr {
 td {
   align-items: center;
 }
+
+
+.button-group button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #7DA0CA;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.button-group button[type="button"] {
+  background-color: #7da0ca;
+}
+
+.button-group button[type="submit"] {
+  background-color: #5e8ac0;
+}
+
+.button-group button:hover {
+  opacity: 0.8;
+}
+
