@@ -74,9 +74,12 @@ if(isset($_SESSION['username'])) {
     <span title="Logout"><a href="logout.php" onclick="return confirmSignOut()"><i id="logout" class="fa fa-sign-out"></i></a></span>
 </div>
 
-<h2 id="doclandh2" class="doctor_name">Welcome Doctor <?php echo $firstName . ' ' . $lastName; ?></h2>
+<p id="datetime"></p>
+<h2 class="titleh2">Today's Patients</h2>
+<hr style="margin-bottom: 30px; width: 95% !important;">
 <div id="todayTable"> 
-    <h2>Today's Patients</h2>
+
+
     <table>
         <tr>
             <th>Appointment ID</th>
@@ -139,6 +142,17 @@ function closeNav() {
 function confirmSignOut() {
     return confirm("You want to Sign out?");
 }
+
+function updateDateTime() {
+    var dt = new Date();
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dayOfWeek = days[dt.getDay()];
+    var datetime = dt.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }) + ' - ' + dayOfWeek + ', ' + dt.toLocaleDateString('en-US');
+    document.getElementById("datetime").innerHTML = datetime;
+}
+
+// Update date and time every second
+setInterval(updateDateTime, 1000);
 </script>
 </body>
 </html>

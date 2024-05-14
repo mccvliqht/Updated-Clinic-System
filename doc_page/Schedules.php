@@ -110,6 +110,7 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
                 <label for="">End Time</label><br>
                 <input type="time" name="end_time"><br><br>
                 <input type="hidden" name="doc_id" value="<?php echo $doc_id; ?>">
+                <input type="button" value="Clear" onclick="clearForm()">
                 <input type="submit" value="Submit" onclick="return confirmSubmit()"><br>
             </div>
         </form>
@@ -176,6 +177,12 @@ if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
 
     function confirmSignOut() {
         return confirm("You want to Sign out?");
+    }
+
+    function clearForm() {
+        document.querySelector('input[name="date"]').value = '';
+        document.querySelector('input[name="start_time"]').value = '';
+        document.querySelector('input[name="end_time"]').value = '';
     }
     </script>
 

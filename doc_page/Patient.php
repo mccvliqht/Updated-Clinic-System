@@ -46,11 +46,19 @@ if(isset($_SESSION['username'])) {
     $stmt->close(); // Close statement
 
     // Modify the SQL query to fetch data relevant to the current user
-    $sql = "SELECT apt_id, ptn_fname, ptn_lname, serv_name, ptn_contact, apt_date, apt_time, serv_duration, sched_status, tblPatient.ptn_id
-            FROM tblAppoint
-            INNER JOIN tblPatient ON tblAppoint.ptn_id = tblPatient.ptn_id
-            INNER JOIN tblService ON tblAppoint.serv_id = tblService.serv_id
-            WHERE tblAppoint.doc_id = ?";
+$sql = "SELECT apt_id, ptn_fname, ptn_lname, serv_name, ptn_contact, apt_date, apt_time, serv_duration, sched_status, tblPatient.ptn_id
+FROM tblAppoint
+INNER JOIN tblPatient ON tblAppoint.ptn_id = tblPatient.ptn_id
+INNER JOIN tblService ON tblAppoint.serv_id = tblService.serv_id
+WHERE tblAppoint.doc_id = ?";
+
+// Check if a search term is provided
+if (isset($_GET['search']) && !empty($_GET['search']) && isset($_GET['criteria']) && !empty($_GET['criteria'])) {
+$search = $_GET['search'];
+$criteria = $_GET['criteria'];
+$sql .= " AND $criteria LIKE '%$search%'";
+}
+
 
     // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
@@ -74,7 +82,6 @@ if(isset($_SESSION['username'])) {
     <link rel="icon" href="LogoClinic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <span id="BarsNav" style="font-size:30px;cursor:pointer" onclick="openNav()"><i class="fa fa-bars"></i></span>
-    
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
@@ -90,50 +97,65 @@ if(isset($_SESSION['username'])) {
 </div>
 
 <div id="patientTable">
-    <h2>PATIENT LIST</h2>
-    <form action="" method="post">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Service</th>
-                <th>Contacts</th>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>Duration</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            <?php
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>".$row["apt_id"]."</td>";
-                    echo "<td>".$row["ptn_fname"]."</td>";
-                    echo "<td>".$row["ptn_lname"]."</td>";
-                    echo "<td>".$row["serv_name"]."</td>";
-                    echo "<td>".$row["ptn_contact"]."</td>";
-                    echo "<td>".$row["apt_date"]."</td>";
-                    echo "<td>".$row["apt_time"]."</td>";
-                    echo "<td>".$row["serv_duration"]."</td>";
-                    echo "<td>".$row["sched_status"]."</td>";
-                    echo "<td>";
-                    echo "<form id='deleteForm' action='' method='post'>";
-                    echo "<input type='hidden' name='apt_id' value='".$row["apt_id"]."'>";
-                    echo "<input type='submit' name='delete' value='Delete' onclick='return confirmDelete()'>";
-                    echo "</form>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='10'>No records found</td></tr>";
+    <h2>MY PATIENT LIST</h2>
+    <form id="searchFilter" action="" method="get">
+    <select name="criteria">
+        <option value="apt_id">ID</option>
+        <option value="ptn_fname">First Name</option>
+        <option value="ptn_lname">Last Name</option>
+        <option value="serv_name">Service</option>
+        <option value="ptn_contact">Contacts</option>
+        <option value="apt_date">Date</option>
+        <option value="apt_time">Start Time</option>
+        <option value="serv_duration">Duration</option>
+        <option value="sched_status">Status</option>
+    </select>
+    <input type="text" name="search" placeholder="Search..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+    <input type="submit" value="Search">
+    <input type="button" value="Clear" onclick="window.location.href='Patient.php'">
+</form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Service</th>
+            <th>Contacts</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <?php
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>".$row["apt_id"]."</td>";
+                echo "<td>".$row["ptn_fname"]."</td>";
+                echo "<td>".$row["ptn_lname"]."</td>";
+                echo "<td>".$row["serv_name"]."</td>";
+                echo "<td>".$row["ptn_contact"]."</td>";
+                echo "<td>".$row["apt_date"]."</td>";
+                echo "<td>".$row["apt_time"]."</td>";
+                echo "<td>".$row["serv_duration"]."</td>";
+                echo "<td>".$row["sched_status"]."</td>";
+                echo "<td>";
+                echo "<form id='deleteForm' action='' method='post'>";
+                echo "<input type='hidden' name='apt_id' value='".$row["apt_id"]."'>";
+                echo "<input type='submit' name='delete' value='Delete' onclick='return confirmDelete()'>";
+                echo "</form>";
+                echo "</td>";
+                echo "</tr>";
             }
-            ?>
-        </table>
-    </form>
+        } else {
+            echo "<tr><td colspan='10'>No records found</td></tr>";
+        }
+        ?>
+    </table>
 </div>
-      
+
 <script>
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";

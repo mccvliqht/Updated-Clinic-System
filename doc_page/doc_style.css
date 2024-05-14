@@ -2,7 +2,7 @@
 #BarsNav {
     padding-left: 15px;
     padding-top: 15px;
-    display: flex;
+    display: inline-flex;
 }
 
 #mylogo {
@@ -74,40 +74,66 @@ body {
 
 /*Doc Landing Page*/
 
-#doclandh2 {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 30px;
+#datetime {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff; /* or any other color you prefer */
+  background-color: #007bff;
+  margin-bottom: 80px;
+  border: 1px solid #ccc; /* border style */
+  padding: 10px; /* padding inside the border */
+  border-radius: 8px;
+  display: block; /* change the display to block to center the element */
+  text-align: center; /* center the text inside the element */
+  margin-left: auto; /* auto margin for left and right to center the element horizontally */
+  margin-right: auto;
+  width: fit-content; /* set the width to fit the content */
 }
 
 #todayTable {
-  display: table;
   margin: 10px auto 10px; /* Adjust top margin to move the table up slightly */
   text-align: center; /* Center the content inside the table */
 }
 
 #todayTable table {
   border-collapse: collapse;
-  width: 50%; /* Adjust as needed */
+  width: 80%; /* Adjust as needed */
   margin: 0 auto; /* Center the table inside its container */
+  box-shadow: 0px 10px 13px 9px rgba(0,0,0,0.1);
 }
 
 #todayTable table, #todayTable th, #todayTable td {
-  border: 3px solid black; 
+  border: 2px solid rgb(206, 206, 206); 
+  background-color: rgb(255, 255, 255);
   padding: 10px 20px 10px;
   text-align: center; 
 }
-
-
 
 #todayTable th {
   background-color: #007bff;
   color: white;
 }
 
-#todayTable h2 {
+#todayTable td {
+  background-color: #ffffff;
+}
+
+.titleh2 {
   margin-top: 20px; /* Adjust as needed */
   font-size: 30px;
+  margin-bottom: 50px;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #007bff;
+  border: 1px solid #ccc; /* border style */
+  padding: 10px; /* padding inside the border */
+  border-radius: 8px;
+  display: block; /* change the display to block to center the element */
+  text-align: center; /* center the text inside the element */
+  margin-left: auto; /* auto margin for left and right to center the element horizontally */
+  margin-right: auto;
+  width: 23%; 
 }
   
 /*Doc profile*/
@@ -129,6 +155,7 @@ body {
   width: 190px;
   border-radius: 10px;
   text-align: center;
+  box-shadow: 0px 10px 13px 9px rgba(0,0,0,0.1);
 }
 
 .boxSched {
@@ -141,16 +168,22 @@ body {
   text-align: left;
 }
 
-
-input[type="time"] {
-  border: 2px solid lightgray;
-  border-radius: 5px;
-  width: 130px;
-  padding: 5px;
-  cursor: pointer;
+#mainSched input[type="button"] {
+  padding: 12px;
+    border-radius: 5px;
+    border: none; /* Remove the border */
+    background-color: #c0c0c0; /* Set a background color to replace the border */
+    font-size: 16px; /* Set the font size */
+    cursor: pointer; /* Show pointer cursor on hover */
+    margin: 3px;
 }
 
-input[type="date"] {
+#mainSched input[type="button"]:hover {
+  background-color: rgb(120, 120, 120);
+  color: white
+}
+
+input[type="time"], input[type="date"] {
   border: 2px solid lightgray;
   border-radius: 5px;
   width: 130px;
@@ -182,15 +215,18 @@ input[type="submit"]:hover {
   border-collapse: collapse;
   width: 50%; /* Adjust as needed */
   margin: 0 auto; /* Center the table inside its container */
+  box-shadow: 0px 10px 13px 9px rgba(0,0,0,0.1);
 }
 
 #tableSched table, #tableSched th, #tableSched td {
-  border: 3px solid black; 
+  border: 2px solid rgb(214, 214, 214); 
   padding: 10px 20px 10px;
   text-align: center; 
 }
 
-
+#tableSched td {
+  background-color: #ffffff;
+}
 
 #tableSched th {
   background-color: #007bff;
@@ -199,29 +235,87 @@ input[type="submit"]:hover {
 
 #tableSched h3 {
   margin-top: 20px; /* Adjust as needed */
+  color: #ffffff;
+  background-color: #007bff;
+  padding: 10px; /* padding inside the border */
+  border-radius: 8px;
+  display: block; /* change the display to block to center the element */
+  text-align: center; /* center the text inside the element */
+  margin-left: auto; /* auto margin for left and right to center the element horizontally */
+  margin-right: auto;
+  width: 23%; 
 }
 
 /*Doc Patient*/
 
+#searchFilter {
+  margin-bottom: 20px;
+}
+
+#searchFilter select, #searchFilter input[type="text"] {
+  padding: 7px;
+  border: 2px solid rgb(167, 167, 167);
+  border-radius: 10px;
+}
+
+#searchFilter select {
+  cursor: pointer;
+}
+
+#searchFilter select, #searchFilter input[type="text"], #searchFilter input[type="button"], #searchFilter input[type="submit"] {
+  box-shadow: 0px 19px 13px -8px rgba(0,0,0,0.1);
+}
+
+#searchFilter input[type="button"] {
+    padding: 7px;
+    border-radius: 5px;
+    border: none; /* Remove the border */
+    background-color: #c0c0c0; /* Set a background color to replace the border */
+    padding: 8px 16px; /* Add padding for better appearance */
+    font-size: 13px; /* Set the font size */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+#searchFilter input[type="button"]:hover {
+  background-color: rgb(120, 120, 120);
+  color: white
+}
+
+#searchFilter input[type="submit"] {
+  padding: 7px; 
+  background-color: #007bff;
+  color: #fff; 
+  border: 2px solid #007bff; 
+  border-radius: 5px;
+  font-size: 13px; 
+  cursor: pointer;
+}
+
+#searchFilter input[type="submit"]:hover {
+  background-color: rgb(0, 80, 186);
+}
+
 #patientTable {
-  display: table;
   margin: 10px auto 10px; /* Adjust top margin to move the table up slightly */
   text-align: center; /* Center the content inside the table */
 }
 
 #patientTable table {
   border-collapse: collapse;
-  width: 50%; /* Adjust as needed */
+  width: 90%; /* Adjust as needed */
   margin: 0 auto; /* Center the table inside its container */
+  box-shadow: 0px 10px 13px 9px rgba(0,0,0,0.1);
 }
 
 #patientTable table, #patientTable th, #patientTable td {
-  border: 3px solid black; 
+  border: 2px solid rgb(206, 206, 206); 
   padding: 10px 20px 10px;
   text-align: center; 
 }
 
-
+#patientTable td {
+  background-color: #ffffff;
+}
 
 #patientTable th {
   background-color: #007bff;
@@ -230,5 +324,18 @@ input[type="submit"]:hover {
 
 #patientTable h2 {
   margin-top: 20px; /* Adjust as needed */
-  font-size: 30px;
+  font-size: 20px;
+  margin-bottom: 40px;
+  padding: 20px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #007bff;
+  border: 1px solid #ccc; /* border style */
+  padding: 10px; /* padding inside the border */
+  border-radius: 8px;
+  display: block; /* change the display to block to center the element */
+  text-align: center; /* center the text inside the element */
+  margin-left: auto; /* auto margin for left and right to center the element horizontally */
+  margin-right: auto;
+  width: 18%; 
 }
