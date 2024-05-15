@@ -125,9 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['docId'])) {
           <input type="text" placeholder="Search...">
           <button class="search-button"><i class="fas fa-search"></i></button>
         </div>
-        <div class="toolbar__filter">
-          <button class="filter-button"><i class="fas fa-filter"></i> Filter</button>
-        </div>
       </div>
 
       <table class="doctor-table">
@@ -174,6 +171,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['docId'])) {
       </table>
       
   </div>
+  <script>        // Function to prevent form resubmission on page reload
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+</script>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
