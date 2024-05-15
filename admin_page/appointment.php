@@ -42,7 +42,19 @@ if(isset($_SESSION['username'])) {
 
 $stmt->close(); // Close statement
 
-// Fetch appointment records
+// Initialize variables
+$searchTerm = "";
+$searchSql = "";
+
+// Check if search term is provided
+if(isset($_POST['search'])) {
+    $searchTerm = $_POST['search'];
+    
+    // Build the search SQL query dynamically
+    $searchSql = "WHERE ptn.ptn_fname LIKE '%$searchTerm%' OR ptn.ptn_lname LIKE '%$searchTerm%' OR serv.serv_name LIKE '%$searchTerm%' OR CONCAT(doc.doc_fname, ' ', doc.doc_lname) LIKE '%$searchTerm%' OR apt.apt_id = '$searchTerm'";
+}
+
+// Fetch appointment records with search filter
 $appointmentSql = "SELECT apt.apt_id, 
                           CONCAT(ptn.ptn_fname, ' ', ptn.ptn_lname) AS patient, 
                           serv.serv_name AS service, 
@@ -54,9 +66,11 @@ $appointmentSql = "SELECT apt.apt_id,
                    FROM tblappoint apt 
                    INNER JOIN tblpatient ptn ON apt.ptn_id = ptn.ptn_id 
                    INNER JOIN tbldoctor doc ON apt.doc_id = doc.doc_id 
-                   INNER JOIN tblservice serv ON apt.serv_id = serv.serv_id";
+                   INNER JOIN tblservice serv ON apt.serv_id = serv.serv_id
+                   $searchSql"; // Append search filter SQL
 
 $appointmentResult = $conn->query($appointmentSql);
+
 
 // Handle record deletion
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recordId'])) {
@@ -158,15 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recordId'])) {
           <button class="status-button" data-status="canceled">Canceled</button>
         </div>
       </div>
-      <div class="toolbar__search">
-        <div class="apt-search-bar">
-          <input type="text" placeholder="Search...">
-          <button class="search-button"><i class="fa fa-search"></i></button>
-        </div>
-      </div>
-      <div class="toolbar__filter">
-        <button>Filter</button>
-      </div>
+
     </div>
     <table class="appointment-table">
       <thead>
@@ -197,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recordId'])) {
                     echo "<td>" . $row['duration'] . "</td>";
                     echo "<td>" . $row['sched_status'] . "</td>";
                     echo "<td>
-                          <form id=\"delete-form-" . $row['apt_id'] . "\" class=\"delete-form\" method=\"post\">
+                          <form id=\"delete-form-" . $row['apt_id'] . "\" class=\"delete-form\" method=\"post\" onsubmit=\"return confirmDelete();\">
                               <input type=\"hidden\" name=\"recordId\" value=\"" . $row['apt_id'] . "\">
                               <button type=\"submit\" class=\"delete-icon\"><i class=\"fa fa-trash\"></i></button>
                           </form>
@@ -220,6 +226,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recordId'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
   <script>
+    
+        // Function to prevent form resubmission on page reload
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    
     function toggleStatusInput(button) {
       var form = button.parentElement;
       var input = form.querySelector('.status-input');
@@ -229,6 +241,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recordId'])) {
       button.style.display = 'none';
       submitButton.style.display = 'block';
     }
+
+    // JavaScript function to display a confirmation prompt before deleting an appointment
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this appointment?");
+    }
+
+    // Function to toggle status input and show confirmation prompt
+    function toggleStatusInput(button) {
+        var form = button.parentElement;
+        var input = form.querySelector('.status-input');
+        var submitButton = form.querySelector('.submit-icon');
+      
+        // Display the status input field
+        input.style.display = 'block';
+        // Hide the edit icon
+        button.style.display = 'none';
+        // Show the submit icon
+        submitButton.style.display = 'block';
+
+        // Attach event listener to the submit button for confirmation
+        submitButton.addEventListener('click', function(event) {
+            if (!confirmSaveChanges()) {
+                event.preventDefault(); // Prevent form submission if user selects "No"
+            }
+        });
+    }
+
+    // Function to confirm before saving changes
+    function confirmSaveChanges() {
+        return confirm("Are you sure you want to save changes?");
+    }
+
+      // Function to filter appointment records based on status
+      function filterAppointments(status) {
+          var rows = document.querySelectorAll(".appointment-table tbody tr");
+
+          rows.forEach(function(row) {
+              var rowStatus = row.querySelector("td:nth-child(8)").textContent.trim();
+              if (status === 'all' || rowStatus.toLowerCase() === status.toLowerCase()) {
+                  row.style.display = "table-row";
+              } else {
+                  row.style.display = "none";
+              }
+          });
+
+          // Remove active class from all buttons
+          document.querySelectorAll(".status-button").forEach(function(button) {
+              button.classList.remove("active-status");
+          });
+
+          // Add active class to the selected button
+          document.querySelector(".status-button[data-status='" + status + "']").classList.add("active-status");
+      }
+
+      // Add event listeners to status buttons to filter appointments
+      document.querySelectorAll(".status-button").forEach(function(button) {
+          button.addEventListener("click", function() {
+              var status = this.dataset.status;
+              filterAppointments(status);
+          });
+      });
   </script>
 </body>
 </html>
