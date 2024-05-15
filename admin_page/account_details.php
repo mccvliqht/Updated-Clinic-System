@@ -1,5 +1,16 @@
 <?php
-session_start(); // Start the session
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username']) || isset($_SESSION['logged_out'])) {
+    // Redirect to the login page
+    header("location: ../login.php");
+    exit;
+}
+
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
 
 // Include your database configuration file
 include '../config.php'; 
@@ -14,10 +25,10 @@ if(isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
     // Prepare SQL statement to fetch account details
-    $sql = "SELECT adm_fname, adm_lname, adm_email, adm_contact, lgn_username 
-            FROM tblAdmin 
-            INNER JOIN tblLogin ON tblAdmin.lgn_id = tblLogin.lgn_id 
-            WHERE tblLogin.lgn_username = ?";
+    $sql = "SELECT adm_fname, adm_lname, adm_email, adm_contact, lgn_username
+        FROM tblAdmin
+        INNER JOIN tblLogin ON tblAdmin.lgn_id = tblLogin.lgn_id
+        WHERE tblLogin.lgn_username = ?";
 
     // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
@@ -44,25 +55,26 @@ if(isset($_SESSION['username'])) {
         $contact = $adm_contact;
         $username = $lgn_username;
     }
+}
 
     // Predefined dark colors
     $darkColors = [
-      '#2c3e50', // Dark blue
-      '#34495e', // Dark blue-gray
-      '#1f3a93', // Dark royal blue
-      '#273c75', // Dark blue
-      '#192a56', // Dark navy blue
-      '#2c3e50', // Dark blue
-      '#2e86de', // Dark cerulean blue
-      '#006266', // Dark teal blue
-      '#3b3b98', // Dark indigo blue
-      '#2d3436', // Dark grayish blue
-      '#7f8c8d', // Dark gray
-    ];
+        '#2c3e50', // Dark blue
+        '#34495e', // Dark blue-gray
+        '#1f3a93', // Dark royal blue
+        '#273c75', // Dark blue
+        '#192a56', // Dark navy blue
+        '#2c3e50', // Dark blue
+        '#2e86de', // Dark cerulean blue
+        '#006266', // Dark teal blue
+        '#3b3b98', // Dark indigo blue
+        '#2d3436', // Dark grayish blue
+        '#7f8c8d', // Dark gray
+      ];
+  
+      // Randomly select a dark color
+      $randomColor = $darkColors[array_rand($darkColors)];
 
-    // Randomly select a dark color
-    $randomColor = $darkColors[array_rand($darkColors)];
-}
 
 $stmt->close(); 
 
@@ -98,7 +110,7 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
         }
 
         if ($stmtAdmin->affected_rows <= 0) {
-            throw new Exception("");
+            throw new Exception("No rows affected");
         }
 
         $stmtAdmin->close();
@@ -115,56 +127,12 @@ if(isset($_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['em
     } catch (Exception $e) {
         $conn->rollback();
         // Handle error - Display error message or log it for debugging
-        echo "Error: " . $e->getMessage();
+        echo "Failed to save changes. Please try again later.";
+        // Log the error for debugging purposes
+        error_log("Error: " . $e->getMessage(), 0);
     }
-}
-
-// Password change functionality
-if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPassword'])) {
-    $currentPassword = $_POST['currentPassword'];
-    $newPassword = $_POST['newPassword'];
-    $confirmPassword = $_POST['confirmPassword'];
-    $username = $_SESSION['username'];
-
-    // Prepare SQL statement to fetch current password
-    $sql = "SELECT lgn_password FROM tblLogin WHERE lgn_username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($hashedPassword);
-        $stmt->fetch();
-
-        // Verify if the entered current password matches the stored password
-        if (password_verify($currentPassword, $hashedPassword)) {
-            // Check if new password matches the confirm password
-            if ($newPassword === $confirmPassword) {
-                // Update the password in the database
-                $hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $updateSql = "UPDATE tblLogin SET lgn_password = ? WHERE lgn_username = ?";
-                $updateStmt = $conn->prepare($updateSql);
-                $updateStmt->bind_param("ss", $hashedNewPassword, $username);
-                if ($updateStmt->execute()) {
-                    echo "Password updated successfully!";
-                } else {
-                    echo "Failed to update password.";
-                }
-            } else {
-                echo "New password and confirm password do not match.";
-            }
-        } else {
-            echo "Current password is incorrect.";
-        }
-    } else {
-        echo "User not found.";
-    }
-
-    $stmt->close();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -203,6 +171,7 @@ if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPasswo
     </ul>
   </div>
   <div class="content">
+  <div class="content">
     <div class="profile-container">
       <div class="profile-letter" style="background-color: <?php echo $randomColor; ?>">
         <?php echo $firstName ? strtoupper(substr($firstName, 0, 1)) : ''; ?>
@@ -217,7 +186,7 @@ if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPasswo
       </div>
     </div>
     <div class="edit-account-details">
-    <div class="account-section">
+      <div class="account-section">
         <h2>Account Details</h2>
         <hr>
         <form id="editAccountForm" action="" method="post">
@@ -269,7 +238,41 @@ if(isset($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPasswo
         </form>
       </div>
     </div>
+</div>
 
+<script>
+
+        // Function to prevent form resubmission on page reload
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+
+
+        // Function to confirm before saving changes
+        function confirmSaveChanges() {
+        return confirm("Are you sure you want to save changes?");
+        }
+
+        // Attach event listener to the submit button of the edit account form
+        document.getElementById('editAccountForm').addEventListener('submit', function(event) {
+        // Ask for confirmation before submitting the form
+        if (!confirmSaveChanges()) {
+            event.preventDefault(); // Prevent form submission if user selects "No"
+        } else {
+            window.location.reload(); // Reload the page after user presses "Yes"
+        }
+        });
+
+        // Attach event listener to the submit button of the change password form
+        document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
+        // Ask for confirmation before submitting the form
+        if (!confirmSaveChanges()) {
+            event.preventDefault(); // Prevent form submission if user selects "No"
+        } else {
+            window.location.reload(); // Reload the page after user presses "Yes"
+        }
+        });
+    </script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="admin_script.js"></script>
 </body>
