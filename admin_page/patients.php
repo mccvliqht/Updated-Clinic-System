@@ -71,22 +71,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ptnId'])) {
       // Execute patient deletion query
       if ($stmtPatient->execute()) {
           // If both deletions are successful, echo 'success'
-         
+          $response = array('success' => true);
+          echo json_encode($response);
+          exit();
       } else {
           // If patient deletion fails, echo 'error'
-          
+          $response = array('success' => false, 'message' => 'Error deleting patient record.');
+          echo json_encode($response);
+          exit();
       }
   } else {
       // If appointment deletion fails, echo 'error'
-     
+      $response = array('success' => false, 'message' => 'Error deleting appointment records.');
+      echo json_encode($response);
+      exit();
   }
 
   // Close statements
   $stmtAppointments->close();
   $stmtPatient->close();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -97,11 +101,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ptnId'])) {
   <title>Admin Page</title>
   <link rel="stylesheet" href="admin_style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <div class="sidebar">
     <div class="navbar">
-    <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
+      <div class="navbar-title" id="navbarTitle">ADMIN PANEL</div>
       <button class="nav-icon" onclick="toggleSidebar()">
         <span class="line"></span>
         <span class="line"></span>
@@ -125,64 +130,91 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ptnId'])) {
         <li><a href="logout.php"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
     </ul>
   </div>
+
   <div class="content">
     <h2>Patients List</h2>
-      <div class="toolbar">
-        <div class="toolbar__search">
-          <input type="text" placeholder="Search...">
-          <button class="search-button"><i class="fas fa-search"></i></button>
-        </div>
-        <div class="toolbar__filter">
-          <button class="filter-button"><i class="fas fa-filter"></i> Filter</button>
-        </div>
+    <div class="toolbar">
+      <div class="toolbar__search">
+        <input type="text" placeholder="Search...">
+        <button class="search-button"><i class="fas fa-search"></i></button>
       </div>
+    </div>
 
-      <table class="doctor-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Contacts</th>
-            <th>Email</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Appointment ID</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            // Populate table rows with patient records
-            if ($patientResult->num_rows > 0) {
-                while ($row = $patientResult->fetch_assoc()) {
-                    echo "<tr data-id='" . $row['ID'] . "'>";
-                    echo "<td>" . $row['ID'] . "</td>";
-                    echo "<td>" . $row['Last Name'] . "</td>";
-                    echo "<td>" . $row['First Name'] . "</td>";
-                    echo "<td>" . $row['Contacts'] . "</td>";
-                    echo "<td>" . $row['Email'] . "</td>";
-                    echo "<td>" . $row['Age'] . "</td>";
-                    echo "<td>" . $row['Gender'] . "</td>";
-                    echo "<td>" . $row['Appointment ID'] . "</td>";
-                    echo "<td>
-                    <form method='post'>
-                        <input type='hidden' name='ptnId' value='" . $row['ID'] . "'>
-                        <div class='action-icons'>
-                            <button type='submit' class='delete-icon'><i class='fa fa-trash'></i></button>
-                        </div>
-                    </form>
-                   </td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='9'>No records found</td></tr>";
-            }
-          ?>
-        </tbody>
-      </table>
-      
+    <table class="doctor-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Contacts</th>
+          <th>Email</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th>Appointment ID</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          // Populate table rows with patient records
+          if ($patientResult->num_rows > 0) {
+              while ($row = $patientResult->fetch_assoc()) {
+                  echo "<tr data-id='" . $row['ID'] . "'>";
+                  echo "<td>" . $row['ID'] . "</td>";
+                  echo "<td>" . $row['Last Name'] . "</td>";
+                  echo "<td>" . $row['First Name'] . "</td>";
+                  echo "<td>" . $row['Contacts'] . "</td>";
+                  echo "<td>" . $row['Email'] . "</td>";
+                  echo "<td>" . $row['Age'] . "</td>";
+                  echo "<td>" . $row['Gender'] . "</td>";
+                  echo "<td>" . $row['Appointment ID'] . "</td>";
+                  echo "<td>
+                  <form method='post' class='delete-form'>
+                      <input type='hidden' name='ptnId' value='" . $row['ID'] . "'>
+                      <div class='action-icons'>
+                          <button type='button' class='delete-icon' onclick='confirmDelete(" . $row['ID'] . ");'><i class='fa fa-trash'></i></button>
+                      </div>
+                  </form>
+                 </td>";
+                  echo "</tr>";
+              }
+          } else {
+              echo "<tr><td colspan='9'>No records found</td></tr>";
+          }
+        ?>
+      </tbody>
+    </table>
+    
   </div>
+  <script>
+    // Function to prevent form resubmission on page reload
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+
+    // Function to confirm deletion
+    function confirmDelete(ptnId) {
+        if (confirm('Are you sure you want to delete this patient?')) {
+            $.ajax({
+                type: 'POST',
+                url: 'patients.php',
+                data: { ptnId: ptnId },
+                success: function(response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        alert('Patient deleted successfully.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while deleting the patient.');
+                }
+            });
+        }
+    }
+  </script>
   <script src="admin_script.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
