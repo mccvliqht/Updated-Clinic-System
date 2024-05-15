@@ -448,14 +448,4 @@ td {
   color: #000; /* Adjust the text color as needed */
 }
 
-.delete-button {
-  transform: scale(1.5); 
-  margin-left: 15px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-.delete-button:hover {
-  color: #007bff; /* Change color on hover */
-}
 
