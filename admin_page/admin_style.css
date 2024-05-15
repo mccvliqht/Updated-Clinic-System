@@ -436,3 +436,26 @@ td {
   opacity: 0.8;
 }
 
+/* Add styles for the active status button */
+.status-button.active-status {
+  background-color: #007bff; /* Adjust the color as needed */
+  color: #fff; /* Adjust the text color as needed */
+}
+
+/* Add styles for hover effect */
+.status-button:hover {
+  background-color: #f0f0f0; /* Adjust the color as needed */
+  color: #000; /* Adjust the text color as needed */
+}
+
+.delete-button {
+  transform: scale(1.5); 
+  margin-left: 15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.delete-button:hover {
+  color: #007bff; /* Change color on hover */
+}
+
